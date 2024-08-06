@@ -16,7 +16,8 @@
             <!-- SVG content -->
           </svg>
         </router-link>
-        <router-link to="/" class="hover:underline">Login</router-link>
+        <router-link v-if="!isLoggedIn" to="/login" class="hover:underline">Login</router-link>
+        <button v-else @click="logout" class="hover:underline">Logout</button>
       </div>
       <button @click="toggleMenu" class="md:hidden text-white">
         <svg
@@ -49,38 +50,38 @@
           <!-- SVG content -->
         </svg>
       </router-link>
-      <router-link to="/" class="block p-2 hover:bg-yellow-400">Login</router-link>
+      <router-link v-if="!isLoggedIn" to="/login" class="block p-2 hover:bg-yellow-400">Login</router-link>
+      <button v-else @click="logout" class="block w-full text-left p-2 hover:bg-yellow-400">Logout</button>
     </div>
   </nav>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
+import { useRouter } from 'vue-router'
 
-/**
- * @module Navbar
- * @description A navigation bar component for the SwiftCart Store.
- */
 export default {
   name: 'Navbar',
   setup() {
-    /**
-     * @description Ref to keep track of the menu's open state.
-     * @type {import('vue').Ref<boolean>}
-     */
     const open = ref(false)
+    const router = useRouter()
+    const isLoggedIn = inject('isLoggedIn')
 
-    /**
-     * @function toggleMenu
-     * @description Toggles the visibility of the mobile menu.
-     */
     const toggleMenu = () => {
       open.value = !open.value
     }
 
+    const logout = () => {
+      localStorage.removeItem('token')
+      isLoggedIn.value = false
+      router.push('/')
+    }
+
     return {
       open,
-      toggleMenu
+      toggleMenu,
+      isLoggedIn,
+      logout
     }
   }
 }
