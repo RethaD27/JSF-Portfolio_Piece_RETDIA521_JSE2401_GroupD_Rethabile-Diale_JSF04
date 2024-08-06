@@ -3,17 +3,28 @@ import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import ProductGrid from './components/ProductGrid.vue'
 import ProductDetail from './components/ProductDetail.vue'
+import Login from './components/Login.vue'
+import { requireAuth } from './auth'
 
 const routes = [
   { 
     path: '/', 
     component: ProductGrid,
-    props: true  // This allows the component to receive props from the router-view
+    props: true
   },
   { 
     path: '/product/:id', 
     component: ProductDetail,
     props: true
+  },
+  {
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/protected',
+    component: () => import('./components/ProtectedComponent.vue'),
+    beforeEnter: requireAuth
   }
 ]
 
