@@ -32,7 +32,6 @@
           <option value="desc">Highest to Lowest</option>
         </select>
 
-        <!-- New Reset Button -->
         <button
           @click="resetFiltersAndSort"
           class="bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 transition duration-200"
@@ -53,7 +52,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, provide } from 'vue'
 import Navbar from './components/Navbar.vue'
 
 export default {
@@ -62,47 +61,14 @@ export default {
     Navbar
   },
   setup() {
-    /**
-     * @description List of all products fetched from the API.
-     * @type {import('vue').Ref<Object[]>}
-     */
     const products = ref([])
-
-    /**
-     * @description List of product categories fetched from the API.
-     * @type {import('vue').Ref<string[]>}
-     */
     const categories = ref([])
-
-    /**
-     * @description Search query entered by the user.
-     * @type {import('vue').Ref<string>}
-     */
     const searchQuery = ref('')
-
-    /**
-     * @description Selected category for filtering products.
-     * @type {import('vue').Ref<string>}
-     */
     const selectedCategory = ref('')
-
-    /**
-     * @description Selected sort order for sorting products.
-     * @type {import('vue').Ref<string>}
-     */
     const sortOrder = ref('')
-
-    /**
-     * @description Indicates whether the product data is still loading.
-     * @type {import('vue').Ref<boolean>}
-     */
     const loading = ref(true)
+    const isLoggedIn = ref(false)
 
-    /**
-     * @function fetchProducts
-     * @description Fetches the list of products from the API.
-     * @returns {Promise<void>}
-     */
     const fetchProducts = async () => {
       loading.value = true
       try {
@@ -116,11 +82,6 @@ export default {
       }
     }
 
-    /**
-     * @function fetchCategories
-     * @description Fetches the list of product categories from the API.
-     * @returns {Promise<void>}
-     */
     const fetchCategories = async () => {
       try {
         const response = await fetch('https://fakestoreapi.com/products/categories')
@@ -131,29 +92,16 @@ export default {
       }
     }
 
-    /**
-     * @function searchProducts
-     * @description Initiates a product search based on the search query.
-     */
     const searchProducts = () => {
-      // This function is kept for consistency, but Vue's reactivity will handle the filtering
+      // Vue's reactivity will handle the filtering
     }
 
-    /**
-     * @function resetFiltersAndSort
-     * @description Resets the filters and sorting options to their default values.
-     */
     const resetFiltersAndSort = () => {
       selectedCategory.value = ''
       sortOrder.value = ''
       searchQuery.value = ''
     }
 
-    /**
-     * @computed filteredProducts
-     * @description Computes the filtered list of products based on the selected category, sort order, and search query.
-     * @returns {Object[]} The filtered list of products.
-     */
     const filteredProducts = computed(() => {
       let prods = [...products.value]
       if (selectedCategory.value) {
@@ -174,10 +122,17 @@ export default {
       return prods
     })
 
+    const checkLoginStatus = () => {
+      isLoggedIn.value = !!localStorage.getItem('token')
+    }
+
     onMounted(() => {
       fetchProducts()
       fetchCategories()
+      checkLoginStatus()
     })
+
+    provide('isLoggedIn', isLoggedIn)
 
     return {
       categories,
@@ -187,7 +142,9 @@ export default {
       loading,
       filteredProducts,
       searchProducts,
-      resetFiltersAndSort
+      resetFiltersAndSort,
+      isLoggedIn,
+      checkLoginStatus
     }
   }
 }
