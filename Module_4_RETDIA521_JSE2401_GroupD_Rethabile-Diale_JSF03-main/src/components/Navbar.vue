@@ -51,8 +51,7 @@ export default {
     const open = ref(false)
     const router = useRouter()
     const isLoggedIn = inject('isLoggedIn')
-    const totalItems = inject('totalItems')
-    const { clearCart } = useCart()
+    const { clearCart, totalItems } = useCart()
 
     const toggleMenu = () => {
       open.value = !open.value
