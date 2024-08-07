@@ -5,16 +5,8 @@
       <div class="hidden md:flex">
         <router-link to="/" class="mr-4 hover:underline">Home</router-link>
         <router-link to="/" class="mr-4 hover:underline">Wishlist</router-link>
-        <router-link to="/" class="mr-4 hover:underline">
-          <svg
-            width="32px"
-            height="32px"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <!-- SVG content -->
-          </svg>
+        <router-link to="/cart" v-if="isLoggedIn" class="mr-4 hover:underline">
+          Cart ({{ totalItems }})
         </router-link>
         <router-link v-if="!isLoggedIn" to="/login" class="hover:underline">Login</router-link>
         <button v-else @click="logout" class="hover:underline">Logout</button>
@@ -39,16 +31,8 @@
     <div v-if="open" class="md:hidden mt-4 bg-purple-500">
       <router-link to="/" class="block p-2 hover:bg-yellow-400">Home</router-link>
       <router-link to="/" class="block p-2 hover:bg-yellow-400">Wishlist</router-link>
-      <router-link to="/" class="block p-2 hover:bg-yellow-400">
-        <svg
-          width="32px"
-          height="32px"
-          viewBox="0 0 32 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <!-- SVG content -->
-        </svg>
+      <router-link to="/cart" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400">
+        Cart ({{ totalItems }})
       </router-link>
       <router-link v-if="!isLoggedIn" to="/login" class="block p-2 hover:bg-yellow-400">Login</router-link>
       <button v-else @click="logout" class="block w-full text-left p-2 hover:bg-yellow-400">Logout</button>
@@ -59,6 +43,7 @@
 <script>
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
+import { useCart } from '../composables/useCart'
 
 export default {
   name: 'Navbar',
@@ -66,6 +51,8 @@ export default {
     const open = ref(false)
     const router = useRouter()
     const isLoggedIn = inject('isLoggedIn')
+    const totalItems = inject('totalItems')
+    const { clearCart } = useCart()
 
     const toggleMenu = () => {
       open.value = !open.value
@@ -74,6 +61,7 @@ export default {
     const logout = () => {
       localStorage.removeItem('token')
       isLoggedIn.value = false
+      clearCart()
       router.push('/')
     }
 
@@ -81,7 +69,8 @@ export default {
       open,
       toggleMenu,
       isLoggedIn,
-      logout
+      logout,
+      totalItems
     }
   }
 }
