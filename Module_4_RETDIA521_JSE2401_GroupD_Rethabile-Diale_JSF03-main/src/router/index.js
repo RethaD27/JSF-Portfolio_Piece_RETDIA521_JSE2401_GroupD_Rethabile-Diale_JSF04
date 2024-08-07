@@ -4,6 +4,7 @@ import ProductDetail from '../components/ProductDetail.vue';
 import Login from '../components/Login.vue';
 import ShoppingCart from '../components/ShoppingCart.vue';
 import ProtectedComponent from '../components/ProtectedComponent.vue';
+import ComparisonPage from '../components/ComparisonPage.vue';
 import { requireAuth } from '../auth';
 
 const routes = [
@@ -33,6 +34,12 @@ const routes = [
     path: '/protected',
     name: 'Protected',
     component: ProtectedComponent,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/comparison',
+    name: 'ComparisonPage',
+    component: ComparisonPage,
     meta: { requiresAuth: true },
   },
 ];
