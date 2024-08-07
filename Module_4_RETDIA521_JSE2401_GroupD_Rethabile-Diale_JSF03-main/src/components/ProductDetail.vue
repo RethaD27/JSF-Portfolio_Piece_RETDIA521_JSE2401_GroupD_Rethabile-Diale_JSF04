@@ -3,7 +3,7 @@
     <button @click="goBack" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-75 transition duration-200">
       Go Back
     </button>
-
+    
     <div v-if="loading" class="flex items-center justify-center h-screen">
       <div class="text-center py-8 bg-white p-4 rounded shadow-md">
         <svg class="w-16 h-16 mx-auto animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -13,7 +13,7 @@
         <p class="mt-4">Loading...</p>
       </div>
     </div>
-
+    
     <div v-else-if="product" class="bg-white p-6 rounded shadow-lg mt-16">
       <div class="flex justify-center items-center">
         <img :src="product.image" :alt="product.title" class="w-64 h-64 object-contain mb-4 rounded" />
@@ -37,6 +37,7 @@
           </svg>
         </button>
         <AddToCartButton :product="product" />
+        <ComparisonButton :product="product" />
       </div>
     </div>
   </div>
@@ -46,16 +47,17 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AddToCartButton from './AddToCartButton.vue'
+import ComparisonButton from './ComparisonButton.vue'
 
 export default {
   name: 'ProductDetail',
   components: {
-    AddToCartButton
+    AddToCartButton,
+    ComparisonButton
   },
   setup() {
     const route = useRoute()
     const router = useRouter()
-    
     const product = ref(null)
     const loading = ref(true)
     const favorites = ref([])
