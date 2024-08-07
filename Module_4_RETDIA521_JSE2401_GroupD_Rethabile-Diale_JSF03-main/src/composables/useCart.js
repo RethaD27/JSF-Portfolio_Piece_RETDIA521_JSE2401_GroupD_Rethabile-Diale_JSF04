@@ -25,7 +25,11 @@ export function useCart() {
     const item = cart.value.find(item => item.id === productId)
     if (item) {
       item.quantity = quantity
-      saveCart()
+      if (item.quantity <= 0) {
+        removeFromCart(productId)
+      } else {
+        saveCart()
+      }
     }
   }
 
