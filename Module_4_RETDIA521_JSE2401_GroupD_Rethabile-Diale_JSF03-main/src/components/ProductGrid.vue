@@ -37,6 +37,7 @@
             </svg>
           </button>
           <AddToCartButton :product="product" />
+          <ComparisonButton :product="product" />
         </div>
       </div>
     </div>
@@ -47,12 +48,14 @@
 import { ref, onMounted } from 'vue'
 import Loading from './Loading.vue'
 import AddToCartButton from './AddToCartButton.vue'
+import ComparisonButton from './ComparisonButton.vue'
 
 export default {
   name: 'ProductGrid',
   components: {
     Loading,
-    AddToCartButton
+    AddToCartButton,
+    ComparisonButton
   },
   props: {
     filteredProducts: {
