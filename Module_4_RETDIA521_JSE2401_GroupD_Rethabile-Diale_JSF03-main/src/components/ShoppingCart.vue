@@ -25,11 +25,22 @@
 
 <script>
 import { useCart } from '../composables/useCart'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'ShoppingCart',
   setup() {
-    const { cart, removeFromCart, updateQuantity, clearCart, totalCost } = useCart()
+    const { cart, removeFromCart, updateQuantity, clearCart, totalCost, loadCart } = useCart()
+    const router = useRouter()
+
+    onMounted(() => {
+      if (!localStorage.getItem('token')) {
+        router.push('/login')
+      } else {
+        loadCart()
+      }
+    })
 
     return {
       cart,
