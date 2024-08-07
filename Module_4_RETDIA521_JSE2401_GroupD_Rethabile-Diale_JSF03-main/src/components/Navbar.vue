@@ -8,6 +8,9 @@
         <router-link to="/cart" v-if="isLoggedIn" class="mr-4 hover:underline">
           Cart ({{ totalItems }})
         </router-link>
+        <router-link to="/comparison" v-if="isLoggedIn" class="mr-4 hover:underline">
+          Compare ({{ comparisonCount }})
+        </router-link>
         <router-link v-if="!isLoggedIn" to="/login" class="hover:underline">Login</router-link>
         <button v-else @click="logout" class="hover:underline">Logout</button>
       </div>
@@ -34,6 +37,9 @@
       <router-link to="/cart" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400">
         Cart ({{ totalItems }})
       </router-link>
+      <router-link to="/comparison" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400">
+        Compare ({{ comparisonCount }})
+      </router-link>
       <router-link v-if="!isLoggedIn" to="/login" class="block p-2 hover:bg-yellow-400">Login</router-link>
       <button v-else @click="logout" class="block w-full text-left p-2 hover:bg-yellow-400">Logout</button>
     </div>
@@ -44,6 +50,7 @@
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
+import { useComparison } from '../composables/useComparison'
 
 export default {
   name: 'Navbar',
@@ -52,6 +59,7 @@ export default {
     const router = useRouter()
     const isLoggedIn = inject('isLoggedIn')
     const { clearCart, totalItems } = useCart()
+    const { comparisonCount } = useComparison()
 
     const toggleMenu = () => {
       open.value = !open.value
@@ -69,7 +77,8 @@ export default {
       toggleMenu,
       isLoggedIn,
       logout,
-      totalItems
+      totalItems,
+      comparisonCount
     }
   }
 }
