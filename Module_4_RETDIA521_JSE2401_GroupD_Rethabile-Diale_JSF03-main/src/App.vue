@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <Navbar :totalItems="totalItems" />
     <div class="container mx-auto p-6">
       <div class="mt-20 flex justify-between items-center flex-wrap mb-4">
         <select v-model="selectedCategory" class="border p-2 rounded mb-2 sm:mb-0">
@@ -54,6 +54,7 @@
 <script>
 import { ref, computed, onMounted, provide } from 'vue'
 import Navbar from './components/Navbar.vue'
+import { useCart } from './composables/useCart'
 
 export default {
   name: 'App',
@@ -61,6 +62,7 @@ export default {
     Navbar
   },
   setup() {
+    const { loadCart, totalItems } = useCart()
     const products = ref([])
     const categories = ref([])
     const searchQuery = ref('')
@@ -124,6 +126,9 @@ export default {
 
     const checkLoginStatus = () => {
       isLoggedIn.value = !!localStorage.getItem('token')
+      if (isLoggedIn.value) {
+        loadCart()
+      }
     }
 
     onMounted(() => {
@@ -133,6 +138,7 @@ export default {
     })
 
     provide('isLoggedIn', isLoggedIn)
+    provide('totalItems', totalItems)
 
     return {
       categories,
@@ -144,7 +150,8 @@ export default {
       searchProducts,
       resetFiltersAndSort,
       isLoggedIn,
-      checkLoginStatus
+      checkLoginStatus,
+      totalItems
     }
   }
 }
