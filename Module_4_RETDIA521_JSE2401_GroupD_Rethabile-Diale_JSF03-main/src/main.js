@@ -4,6 +4,7 @@ import App from './App.vue'
 import ProductGrid from './components/ProductGrid.vue'
 import ProductDetail from './components/ProductDetail.vue'
 import Login from './components/Login.vue'
+import ShoppingCart from './components/ShoppingCart.vue'
 import { requireAuth } from './auth'
 
 const routes = [
@@ -21,6 +22,11 @@ const routes = [
     path: '/login',
     component: Login
   },
+    { 
+      path: '/cart', 
+      component: ShoppingCart,
+      beforeEnter: requireAuth
+    },
   {
     path: '/protected',
     component: () => import('./components/ProtectedComponent.vue'),
