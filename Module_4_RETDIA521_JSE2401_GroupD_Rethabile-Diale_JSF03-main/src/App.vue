@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div :class="{ 'dark-mode': isDarkMode }">
+    <ThemeToggle />
     <Navbar :totalItems="totalItems" />
     <div class="container mx-auto p-6">
       <div class="mt-20 flex justify-between items-center flex-wrap mb-4">
@@ -53,13 +54,16 @@
 
 <script>
 import { ref, computed, onMounted, provide } from 'vue'
+import { useRouter } from 'vue-router'
 import Navbar from './components/Navbar.vue'
+import ThemeToggle from './components/ThemeToggle.vue'
 import { useCart } from './composables/useCart'
 
 export default {
   name: 'App',
   components: {
-    Navbar
+    Navbar,
+    ThemeToggle
   },
   setup() {
     const { loadCart, totalItems } = useCart()
@@ -70,6 +74,8 @@ export default {
     const sortOrder = ref('')
     const loading = ref(true)
     const isLoggedIn = ref(false)
+    const isDarkMode = ref(false)
+    const router = useRouter()
 
     const fetchProducts = async () => {
       loading.value = true
@@ -135,10 +141,21 @@ export default {
       fetchProducts()
       fetchCategories()
       checkLoginStatus()
+      const savedTheme = localStorage.getItem('theme')
+      isDarkMode.value = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    })
+
+    router.beforeEach((to, from, next) => {
+      if (to.path === '/comparison' && !isLoggedIn.value) {
+        next('/login')
+      } else {
+        next()
+      }
     })
 
     provide('isLoggedIn', isLoggedIn)
     provide('totalItems', totalItems)
+    provide('isDarkMode', isDarkMode)
 
     return {
       categories,
@@ -151,8 +168,34 @@ export default {
       resetFiltersAndSort,
       isLoggedIn,
       checkLoginStatus,
-      totalItems
+      totalItems,
+      isDarkMode
     }
   }
 }
 </script>
+
+<style>
+/* Base styles */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #4a5568;
+  --secondary-color: #718096;
+}
+
+.dark-mode {
+  --bg-color: #1a202c;
+  --text-color: #e2e8f0;
+  --primary-color: #a0aec0;
+  --secondary-color: #cbd5e0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add more theme-specific styles as needed */
+</style>
