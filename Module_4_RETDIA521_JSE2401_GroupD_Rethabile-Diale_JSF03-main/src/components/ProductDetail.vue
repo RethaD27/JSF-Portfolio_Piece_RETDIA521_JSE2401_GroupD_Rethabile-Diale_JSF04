@@ -19,7 +19,7 @@
         <img :src="product.image" :alt="product.title" class="w-64 h-64 object-contain mb-4 rounded" />
       </div>
       <h3 class="text-2xl font-bold mb-2">{{ product.title }}</h3>
-      <p class="text-gray-700 mb-2">${{ product.price.toFixed(2) }}</p>
+      <p class="text-gray-700 font-bold mb-2">${{ product.price.toFixed(2) }}</p>
       <p class="text-gray-500 mb-2">{{ product.category }}</p>
       <div class="flex items-center mb-2">
         <div class="flex">
