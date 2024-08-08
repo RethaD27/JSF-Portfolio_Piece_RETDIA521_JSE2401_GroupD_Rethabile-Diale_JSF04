@@ -6,6 +6,7 @@ import ProductDetail from './components/ProductDetail.vue'
 import Login from './components/Login.vue'
 import ShoppingCart from './components/ShoppingCart.vue'
 import { requireAuth } from './auth'
+import './assets/main.css' //
 
 const routes = [
   { 
