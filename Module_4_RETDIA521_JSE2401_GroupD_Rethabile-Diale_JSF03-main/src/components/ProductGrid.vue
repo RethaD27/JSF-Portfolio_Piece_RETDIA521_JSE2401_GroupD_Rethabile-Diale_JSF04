@@ -9,7 +9,7 @@
       </router-link>
       <div class="card-content p-4 flex flex-col flex-grow">
         <h3 class="text-lg font-bold mb-2">{{ product.title }}</h3>
-        <p class="text-gray-700 mb-2">${{ product.price.toFixed(2) }}</p>
+        <p class="text-gray-700 font-bold mb-2">${{ product.price.toFixed(2) }}</p>
         <p class="text-gray-500">{{ product.category }}</p>
         <div class="flex items-center mb-4">
           <div class="flex">

@@ -1,4 +1,3 @@
-// src/composables/useCart.js
 import { ref, computed } from 'vue'
 import { jwtDecode } from 'jwt-decode'
 

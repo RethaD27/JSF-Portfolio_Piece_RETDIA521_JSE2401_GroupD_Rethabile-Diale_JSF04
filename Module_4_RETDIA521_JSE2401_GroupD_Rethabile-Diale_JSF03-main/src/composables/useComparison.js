@@ -1,4 +1,3 @@
-// src/composables/useComparison.js
 import { ref, computed } from 'vue'
 
 const comparisonList = ref([])
