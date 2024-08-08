@@ -6,13 +6,15 @@
     </div>
     <div v-else>
       <div class="overflow-x-auto">
-        <table class="min-w-full bg-white">
+        <table class="min-w-full bg-white border-collapse border border-gray-300">
           <thead>
             <tr>
-              <th class="px-4 py-2">Specification</th>
-              <th v-for="product in comparisonList" :key="product.id" class="px-4 py-2">
+              <th class="px-4 py-2 border border-gray-300">Specification</th>
+              <th v-for="product in comparisonList" :key="product.id" class="px-4 py-2 border border-gray-300">
                 {{ product.title }}
-                <button @click="removeFromComparison(product.id)" class="ml-2 text-red-500">Remove</button>
+                <button @click="removeFromComparison(product.id)" class="ml-2 text-red-500 hover:text-red-700">
+                  Remove
+                </button>
               </th>
             </tr>
           </thead>
@@ -44,7 +46,9 @@
           </tbody>
         </table>
       </div>
-      <button @click="clearComparison" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">Clear Comparison</button>
+      <button @click="clearComparison" class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        Clear Comparison
+      </button>
     </div>
   </div>
 </template>
