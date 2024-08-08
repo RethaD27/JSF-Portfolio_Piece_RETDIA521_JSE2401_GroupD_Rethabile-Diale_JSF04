@@ -6,7 +6,9 @@ import ProductDetail from './components/ProductDetail.vue'
 import Login from './components/Login.vue'
 import ShoppingCart from './components/ShoppingCart.vue'
 import { requireAuth } from './auth'
-import './assets/main.css' //
+import ComparisonPage from './components/ComparisonPage.vue'
+import Wishlist from './components/Wishlist.vue';
+import './assets/main.css'
 
 const routes = [
   { 
@@ -27,6 +29,18 @@ const routes = [
       path: '/cart', 
       component: ShoppingCart,
       beforeEnter: requireAuth
+    },
+    {
+      path: '/comparison',
+      name: 'Comparison',
+      component: ComparisonPage,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/wishlist',
+      name: 'Wishlist',
+      component: Wishlist,
+      meta: { requiresAuth: true },
     },
   {
     path: '/protected',
