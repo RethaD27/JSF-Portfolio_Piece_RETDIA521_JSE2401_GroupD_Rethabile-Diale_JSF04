@@ -1,8 +1,9 @@
 <template>
   <div :class="{ 'dark-mode': isDarkMode }">
     <ThemeToggle />
-    <Navbar :totalItems="totalItems" />
+    <Navbar :totalItems="totalItems" :wishlistCount="wishlistCount" />
     <div class="container mx-auto p-6">
+      <WishlistWidget />
       <div class="mt-20 flex justify-between items-center flex-wrap mb-4">
         <select v-model="selectedCategory" class="border p-2 rounded mb-2 sm:mb-0">
           <option value="">All Categories</option>
@@ -57,16 +58,21 @@ import { ref, computed, onMounted, provide } from 'vue'
 import { useRouter } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
+import WishlistWidget from './components/WishlistWidget.vue'
 import { useCart } from './composables/useCart'
+import { useWishlist } from './composables/useWishlist'
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    ThemeToggle
+    ThemeToggle,
+    WishlistWidget
   },
   setup() {
     const { loadCart, totalItems } = useCart()
+    const { wishlist, wishlistCount } = useWishlist()
+    
     const products = ref([])
     const categories = ref([])
     const searchQuery = ref('')
@@ -156,6 +162,7 @@ export default {
     provide('isLoggedIn', isLoggedIn)
     provide('totalItems', totalItems)
     provide('isDarkMode', isDarkMode)
+    provide('useWishlist', useWishlist)
 
     return {
       categories,
@@ -169,7 +176,8 @@ export default {
       isLoggedIn,
       checkLoginStatus,
       totalItems,
-      isDarkMode
+      isDarkMode,
+      wishlistCount
     }
   }
 }
