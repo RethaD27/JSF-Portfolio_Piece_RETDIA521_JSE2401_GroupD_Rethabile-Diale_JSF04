@@ -1,4 +1,3 @@
-// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import ProductGrid from '../components/ProductGrid.vue';
 import ProductDetail from '../components/ProductDetail.vue';
@@ -6,6 +5,7 @@ import Login from '../components/Login.vue';
 import ShoppingCart from '../components/ShoppingCart.vue';
 import ProtectedComponent from '../components/ProtectedComponent.vue';
 import ComparisonPage from '../components/ComparisonPage.vue';
+import Wishlist from '../components/Wishlist.vue';
 
 const routes = [
   {
@@ -38,23 +38,29 @@ const routes = [
   },
   {
     path: '/comparison',
-    name: 'ComparisonPage',
+    name: 'Comparison',
     component: ComparisonPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/wishlist',
+    name: 'Wishlist',
+    component: Wishlist,
     meta: { requiresAuth: true },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!localStorage.getItem('token')) {
       next({
         path: '/login',
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     } else {
       next();
