@@ -10,7 +10,7 @@
       <div class="card-content p-4 flex flex-col flex-grow">
         <h3 class="text-lg font-bold mb-2">{{ product.title }}</h3>
         <p class="text-gray-700 font-bold mb-2">${{ product.price.toFixed(2) }}</p>
-        <p class="text-gray-500">{{ product.category }}</p>
+        <p class="inline-flex items-center rounded-md bg-blue-50 px-1 py-0 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700">{{ product.category }}</p>
         <div class="flex items-center mb-4">
           <div class="flex">
             <svg v-for="n in 5" :key="n" class="w-5 h-5" :class="{'text-yellow-400': n <= Math.round(product.rating.rate), 'text-gray-300': n > Math.round(product.rating.rate)}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
