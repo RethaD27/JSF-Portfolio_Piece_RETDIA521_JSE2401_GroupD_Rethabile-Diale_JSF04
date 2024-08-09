@@ -31,6 +31,13 @@
       </div>
       <p class="text-gray-700 mb-4">{{ product.description }}</p>
 
+      <div v-if="product.discountPercentage" class="mt-4">
+        <p class="text-red-600 font-bold">{{ product.discountPercentage }}% OFF</p>
+        <p class="text-gray-800 font-bold">${{ product.discountedPrice.toFixed(2) }}</p>
+        <p class="text-gray-500 line-through">${{ product.price.toFixed(2) }}</p>
+        <p class="text-gray-600">Sale ends on: {{ formatDate(product.saleEndDate) }}</p>
+      </div>
+
       <div class="flex justify-between items-center mt-5">
         <button @click="toggleFavorite(product.id)" class="">
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" :class="{ 'text-red-500': isFavorite(product.id), 'text-gray-300': !isFavorite(product.id) }" viewBox="0 0 24 24">
@@ -62,62 +69,76 @@ export default {
     AddToCartButton,
     ComparisonButton
   },
-  setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const product = ref(null)
-    const loading = ref(true)
-    const favorites = ref([])
+setup() {
+  const route = useRoute()
+  const router = useRouter()
+  const product = ref(null)
+  const loading = ref(true)
+  const favorites = ref([])
 
-    onMounted(async () => {
-      loading.value = true
-      try {
-        const response = await fetch(`https://fakestoreapi.com/products/${route.params.id}`)
-        const data = await response.json()
-        product.value = data
-      } catch (error) {
-        console.error('Error fetching product details:', error)
-      } finally {
-        loading.value = false
+  onMounted(async () => {
+    loading.value = true
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/${route.params.id}`)
+      const data = await response.json()
+      product.value = data
+      // Add discount information if it's a discounted product
+      if (product.value.discountPercentage) {
+        product.value.discountedPrice = product.value.price * (1 - product.value.discountPercentage / 100)
+        product.value.saleEndDate = new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000)
       }
-
-      const storedFavorites = localStorage.getItem('favorites')
-      if (storedFavorites) {
-        favorites.value = JSON.parse(storedFavorites)
-      }
-    })
-
-    function goBack() {
-      router.go(-1)
+    } catch (error) {
+      console.error('Error fetching product details:', error)
+    } finally {
+      loading.value = false
     }
 
-    function toggleFavorite(productId) {
-      const index = favorites.value.indexOf(productId)
-      if (index > -1) {
-        favorites.value.splice(index, 1)
-      } else {
-        favorites.value.push(productId)
-      }
-      localStorage.setItem('favorites', JSON.stringify(favorites.value))
+    const storedFavorites = localStorage.getItem('favorites')
+    if (storedFavorites) {
+      favorites.value = JSON.parse(storedFavorites)
     }
+  })
 
-    function isFavorite(productId) {
-      return favorites.value.includes(productId)
-    }
-
-    function addToWishlist(product) {
-      // Implement the logic for adding the product to the wishlist
-      console.log('Product added to wishlist:', product)
-    }
-
-    return {
-      product,
-      loading,
-      goBack,
-      toggleFavorite,
-      isFavorite,
-      addToWishlist
-    }
+  function goBack() {
+    router.go(-1)
   }
+
+  function toggleFavorite(productId) {
+    const index = favorites.value.indexOf(productId)
+    if (index > -1) {
+      favorites.value.splice(index, 1)
+    } else {
+      favorites.value.push(productId)
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites.value))
+  }
+
+  function isFavorite(productId) {
+    return favorites.value.includes(productId)
+  }
+
+  function addToWishlist(product) {
+    // Implement the logic for adding the product to the wishlist
+    console.log('Product added to wishlist:', product)
+  }
+
+  function formatDate(date) {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
+  return {
+    product,
+    loading,
+    goBack,
+    toggleFavorite,
+    isFavorite,
+    addToWishlist,
+    formatDate
+  }
+}
 }
 </script>
