@@ -1,5 +1,24 @@
 <template>
   <div class="container mx-auto py-8">
+    <!-- Discounted Products Section -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Discounted Products</h2>
+      <div class="carousel">
+        <div v-for="product in discountedProducts" :key="product.id" class="carousel-item">
+          <router-link :to="`/product/${product.id}`">
+            <img :src="product.image" :alt="product.title" class="w-full h-48 object-cover" />
+            <div class="p-4">
+              <h3 class="text-lg font-bold">{{ product.title }}</h3>
+              <p class="text-red-600 font-bold">{{ product.discountPercentage }}% OFF</p>
+              <p class="text-gray-800 font-bold">${{ product.discountedPrice.toFixed(2) }}</p>
+              <p class="text-gray-500 line-through">${{ product.price.toFixed(2) }}</p>
+            </div>
+          </router-link>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Products Section -->
     <div class="mb-8">
       <h2 class="text-2xl font-bold mb-4">Featured Products</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -31,6 +50,7 @@
       </div>
     </div>
 
+    <!-- Wishlist Section -->
     <div class="mb-8">
       <h2 class="text-2xl font-bold mb-4">Your Wishlist</h2>
       <div v-if="wishlist.length === 0" class="text-gray-500">
@@ -59,7 +79,7 @@
 </template>
 
 <script>
-import { inject, computed } from 'vue'
+import { inject } from 'vue'
 import AddToCartButton from './components/AddToCartButton.vue'
 
 export default {
@@ -68,14 +88,31 @@ export default {
     AddToCartButton
   },
   setup() {
-    const { filteredProducts } = inject('useApp')
+    const { filteredProducts, discountedProducts } = inject('useApp')
     const { wishlist, addToWishlist } = inject('useWishlist')
 
     return {
       filteredProducts,
+      discountedProducts,
       wishlist,
       addToWishlist
     }
   }
 }
 </script>
+
+<style scoped>
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 250px;
+  margin-right: 1rem;
+  scroll-snap-align: start;
+}
+</style>
