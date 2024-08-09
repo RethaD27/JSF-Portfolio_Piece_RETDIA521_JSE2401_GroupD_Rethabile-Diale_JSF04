@@ -12,6 +12,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: ProductGrid,
+    props: true
   },
   {
     path: '/product/:id',
