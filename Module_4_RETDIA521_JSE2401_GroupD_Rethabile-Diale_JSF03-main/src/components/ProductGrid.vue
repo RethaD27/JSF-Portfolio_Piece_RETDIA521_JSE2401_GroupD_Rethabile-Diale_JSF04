@@ -20,7 +20,7 @@
           <span class="ml-2 text-gray-600">({{ product.rating.count }} reviews)</span>
         </div>
         <div class="mt-auto flex justify-evenly items-center">
-          <button @click.prevent="toggleFavorite(product.id)" class="">
+          <button @click.prevent="toggleFavorite(product.id)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -39,6 +39,11 @@
           <AddToCartButton :product="product" />
           <ComparisonButton :product="product" />
         </div>
+      </div>
+      <div v-if="product.discountPercentage" class="mt-2">
+        <p class="text-red-600 font-bold">{{ product.discountPercentage }}% OFF</p>
+        <p class="text-gray-800 font-bold">${{ (product.price * (1 - product.discountPercentage / 100)).toFixed(2) }}</p>
+        <p class="text-gray-500 line-through">${{ product.price.toFixed(2) }}</p>
       </div>
     </div>
   </div>
