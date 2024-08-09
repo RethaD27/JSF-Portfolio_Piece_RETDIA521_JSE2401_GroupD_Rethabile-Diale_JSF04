@@ -5,47 +5,53 @@ import ProductGrid from './components/ProductGrid.vue'
 import ProductDetail from './components/ProductDetail.vue'
 import Login from './components/Login.vue'
 import ShoppingCart from './components/ShoppingCart.vue'
-import { requireAuth } from './auth'
 import ComparisonPage from './components/ComparisonPage.vue'
-import Wishlist from './components/Wishlist.vue';
+import Wishlist from './components/Wishlist.vue'
+import ProtectedComponent from './components/ProtectedComponent.vue'
+import { requireAuth } from './auth'
 import './assets/main.css'
 
 const routes = [
   { 
     path: '/', 
+    name: 'Home',
     component: ProductGrid,
     props: true
   },
   { 
     path: '/product/:id', 
+    name: 'ProductDetail',
     component: ProductDetail,
     props: true
   },
   {
     path: '/login',
+    name: 'Login',
     component: Login
   },
-    { 
-      path: '/cart', 
-      component: ShoppingCart,
-      beforeEnter: requireAuth
-    },
-    {
-      path: '/comparison',
-      name: 'Comparison',
-      component: ComparisonPage,
-      meta: { requiresAuth: true },
-    },
-    {
-      path: '/wishlist',
-      name: 'Wishlist',
-      component: Wishlist,
-      meta: { requiresAuth: true },
-    },
+  { 
+    path: '/cart', 
+    name: 'ShoppingCart',
+    component: ShoppingCart,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/comparison',
+    name: 'Comparison',
+    component: ComparisonPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/wishlist',
+    name: 'Wishlist',
+    component: Wishlist,
+    meta: { requiresAuth: true },
+  },
   {
     path: '/protected',
-    component: () => import('./components/ProtectedComponent.vue'),
-    beforeEnter: requireAuth
+    name: 'Protected',
+    component: ProtectedComponent,
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -53,6 +59,21 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!localStorage.getItem('token')) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 const app = createApp(App)
 app.use(router)
