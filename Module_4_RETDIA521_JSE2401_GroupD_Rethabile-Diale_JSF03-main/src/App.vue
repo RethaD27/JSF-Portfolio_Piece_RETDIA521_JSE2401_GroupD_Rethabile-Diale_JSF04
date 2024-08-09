@@ -4,6 +4,7 @@
     <Navbar :totalItems="totalItems" :wishlistCount="wishlistCount" />
     <div class="container mx-auto p-6">
       <WishlistWidget />
+
       <div class="mt-20 flex justify-between items-center flex-wrap mb-4">
         <select v-model="selectedCategory" class="border p-2 rounded mb-2 sm:mb-0">
           <option value="">All Categories</option>
@@ -40,6 +41,19 @@
         >
           Reset
         </button>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-xl font-bold">Discounted Products</h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <li v-for="product in discountedProducts" :key="product.id" class="border p-4 rounded">
+            <h3 class="font-semibold">{{ product.title }}</h3>
+            <p>Original Price: {{ product.price }}</p>
+            <p>Discount: {{ product.discountPercentage }}%</p>
+            <p>Discounted Price: {{ product.discountedPrice.toFixed(2) }}</p>
+            <p>Sale Ends: {{ product.saleEndDate.toLocaleDateString() }}</p>
+          </li>
+        </ul>
       </div>
 
       <router-view 
@@ -83,12 +97,15 @@ export default {
     const isDarkMode = ref(false)
     const router = useRouter()
 
+    const discountedProducts = ref([])
+
     const fetchProducts = async () => {
       loading.value = true
       try {
         const response = await fetch('https://fakestoreapi.com/products')
         const data = await response.json()
         products.value = data
+        applyDiscounts() // Apply discounts after fetching products
       } catch (error) {
         console.error('Error fetching products:', error)
       } finally {
@@ -104,6 +121,19 @@ export default {
       } catch (error) {
         console.error('Error fetching categories:', error)
       }
+    }
+
+    const applyDiscounts = () => {
+      const shuffled = [...products.value].sort(() => 0.5 - Math.random())
+      discountedProducts.value = shuffled.slice(0, 5).map(product => {
+        const discount = Math.floor(Math.random() * 50) + 10
+        return {
+          ...product,
+          discountPercentage: discount, // 10% to 60% discount
+          discountedPrice: product.price * (1 - discount / 100),
+          saleEndDate: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000) // Random date within next 7 days
+        }
+      })
     }
 
     const searchProducts = () => {
@@ -177,7 +207,8 @@ export default {
       checkLoginStatus,
       totalItems,
       isDarkMode,
-      wishlistCount
+      wishlistCount,
+      discountedProducts
     }
   }
 }
