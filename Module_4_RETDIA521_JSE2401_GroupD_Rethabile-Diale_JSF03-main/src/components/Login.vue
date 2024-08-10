@@ -9,6 +9,14 @@
       <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
+            <label for="firstName" class="sr-only">First Name</label>
+            <input id="firstName" name="firstName" type="text" required v-model="firstName" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="First Name">
+          </div>
+          <div>
+            <label for="lastName" class="sr-only">Last Name</label>
+            <input id="lastName" name="lastName" type="text" required v-model="lastName" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Last Name">
+          </div>
+          <div>
             <label for="username" class="sr-only">Username</label>
             <input id="username" name="username" type="text" required v-model="username" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Username">
           </div>
@@ -72,6 +80,8 @@ export default {
   setup() {
     const username = ref('')
     const password = ref('')
+    const firstName = ref('')
+    const lastName = ref('')
     const showPassword = ref(false)
     const isLoading = ref(false)
     const error = ref('')
@@ -108,7 +118,9 @@ export default {
           },
           body: JSON.stringify({
             username: username.value,
-            password: password.value
+            password: password.value,
+            firstName: firstName.value,
+            lastName: lastName.value
           })
         })
 
@@ -118,13 +130,15 @@ export default {
 
         const data = await response.json()
         localStorage.setItem('token', data.token)
+        localStorage.setItem('userId', data.userId) // Assuming the API returns a userId
+        localStorage.setItem('userFirstName', firstName.value)
+        localStorage.setItem('userLastName', lastName.value)
         token.value = data.token
 
         successMessage.value = 'Login successful! Redirecting...'
 
         // Simulate a delay to show the success message
         setTimeout(() => {
-          // Redirect to the previous page or home
           const redirectPath = route.query.redirect || '/'
           router.push(redirectPath)
         }, 1500)
@@ -139,6 +153,8 @@ export default {
     return {
       username,
       password,
+      firstName,
+      lastName,
       showPassword,
       isLoading,
       error,
