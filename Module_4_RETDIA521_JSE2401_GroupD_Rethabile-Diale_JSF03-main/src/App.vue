@@ -75,6 +75,7 @@ import ThemeToggle from './components/ThemeToggle.vue'
 import WishlistWidget from './components/WishlistWidget.vue'
 import { useCart } from './composables/useCart'
 import { useWishlist } from './composables/useWishlist'
+import { useReviews } from './composables/useReviews'
 
 export default {
   name: 'App',
@@ -86,7 +87,8 @@ export default {
   setup() {
     const { loadCart, totalItems } = useCart()
     const { wishlist, wishlistCount } = useWishlist()
-    
+    const { reviews, syncReviewsWithAPI } = useReviews()
+
     const products = ref([])
     const categories = ref([])
     const searchQuery = ref('')
@@ -179,6 +181,7 @@ export default {
       checkLoginStatus()
       const savedTheme = localStorage.getItem('theme')
       isDarkMode.value = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      syncReviewsWithAPI() // Sync reviews when the component is mounted
     })
 
     router.beforeEach((to, from, next) => {
@@ -193,6 +196,7 @@ export default {
     provide('totalItems', totalItems)
     provide('isDarkMode', isDarkMode)
     provide('useWishlist', useWishlist)
+    provide('useReviews', { reviews, syncReviewsWithAPI })
 
     return {
       categories,
@@ -208,7 +212,8 @@ export default {
       totalItems,
       isDarkMode,
       wishlistCount,
-      discountedProducts
+      discountedProducts,
+      reviews
     }
   }
 }
