@@ -87,7 +87,7 @@ export default {
   setup() {
     const { loadCart, totalItems } = useCart()
     const { wishlist, wishlistCount } = useWishlist()
-    const { reviews, syncReviewsWithAPI } = useReviews()
+    const { reviews, syncReviewsWithAPI, addReview, editReview, deleteReview, getReviewsForProduct } = useReviews()
 
     const products = ref([])
     const categories = ref([])
@@ -175,6 +175,20 @@ export default {
       }
     }
 
+    const submitReview = (productId, review) => {
+      addReview(productId, review)
+    }
+
+    const updateReview = (productId, reviewId, updatedReview) => {
+      editReview(productId, reviewId, updatedReview)
+    }
+
+    const removeReview = (productId, reviewId) => {
+      deleteReview(productId, reviewId)
+    }
+
+    const productReviews = computed(() => getReviewsForProduct(productId))
+
     onMounted(() => {
       fetchProducts()
       fetchCategories()
@@ -213,7 +227,11 @@ export default {
       isDarkMode,
       wishlistCount,
       discountedProducts,
-      reviews
+      reviews,
+      submitReview,
+      updateReview,
+      removeReview,
+      productReviews
     }
   }
 }
