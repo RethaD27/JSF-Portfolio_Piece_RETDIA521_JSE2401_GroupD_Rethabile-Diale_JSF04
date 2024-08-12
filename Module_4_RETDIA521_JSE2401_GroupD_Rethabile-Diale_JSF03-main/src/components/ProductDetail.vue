@@ -91,8 +91,8 @@
           </div>
           <p>{{ review.text }}</p>
           <div v-if="isLoggedIn && review.userId === currentUserId" class="mt-2">
-            <button @click="editReview(review)" class="text-blue-500 mr-2">Edit</button>
-            <button @click="deleteReview(review.id)" class="text-red-500">Delete</button>
+            <button @click="updateReview(review)" class="text-blue-500 mr-2">Edit</button>
+            <button @click="removeReview(review.id)" class="text-red-500">Delete</button>
           </div>
         </div>
       </div>
@@ -110,6 +110,7 @@ import { ref, computed, onMounted, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AddToCartButton from './AddToCartButton.vue'
 import ComparisonButton from './ComparisonButton.vue'
+import { useReviews } from '../composables/useReviews.js'
 
 export default {
   name: 'ProductDetail',
@@ -127,9 +128,13 @@ export default {
     const currentUserId = ref(localStorage.getItem('userId'))
     const rating = ref(0)
     const reviewText = ref('')
-    const reviews = ref([])
     const sortBy = ref('date')
     const notification = ref('')
+
+    // Using the useReviews composable
+    const { reviews, addReview, editReview, deleteReview, getReviewsForProduct } = useReviews()
+
+    const productId = computed(() => route.params.id)
 
     const goBack = () => {
       router.back()
@@ -153,7 +158,7 @@ export default {
         text: reviewText.value,
         timestamp: new Date().toISOString(),
       }
-      reviews.value.push(newReview)
+      addReview(productId.value, newReview)
       reviewText.value = ''
       rating.value = 0
       notification.value = 'Review submitted successfully!'
@@ -162,14 +167,21 @@ export default {
       }, 3000)
     }
 
-    const editReview = (review) => {
-      rating.value = review.rating
-      reviewText.value = review.text
-      // Additional logic to handle the editing process
+    const updateReview = (review) => {
+      const updatedReview = {
+        ...review,
+        rating: rating.value,
+        text: reviewText.value,
+      }
+      editReview(productId.value, review.id, updatedReview)
+      notification.value = 'Review updated successfully!'
+      setTimeout(() => {
+        notification.value = ''
+      }, 3000)
     }
 
-    const deleteReview = (reviewId) => {
-      reviews.value = reviews.value.filter(review => review.id !== reviewId)
+    const removeReview = (reviewId) => {
+      deleteReview(productId.value, reviewId)
       notification.value = 'Review deleted successfully!'
       setTimeout(() => {
         notification.value = ''
@@ -177,7 +189,8 @@ export default {
     }
 
     const sortedReviews = computed(() => {
-      return [...reviews.value].sort((a, b) => {
+      const productReviews = getReviewsForProduct(productId.value)
+      return [...productReviews].sort((a, b) => {
         if (sortBy.value === 'date') {
           return new Date(b.timestamp) - new Date(a.timestamp)
         } else if (sortBy.value === 'rating') {
@@ -188,9 +201,8 @@ export default {
 
     const fetchProduct = async () => {
       loading.value = true
-      const productId = route.params.id
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${productId}`)
+        const response = await fetch(`https://fakestoreapi.com/products/${productId.value}`)
         const data = await response.json()
         product.value = data
         product.value.discountedPrice = data.price * (1 - data.discountPercentage / 100)
@@ -234,11 +246,11 @@ export default {
       rating,
       reviewText,
       submitReview,
+      updateReview,
       reviews,
       sortBy,
       sortedReviews,
-      deleteReview,
-      editReview,
+      removeReview,
       isFavorite,
       toggleFavorite,
       addToWishlist,
@@ -250,5 +262,5 @@ export default {
 </script>
 
 <style scoped>
-/* Add any additional styling if necessary */
+/* Add any additional styling here if needed */
 </style>
