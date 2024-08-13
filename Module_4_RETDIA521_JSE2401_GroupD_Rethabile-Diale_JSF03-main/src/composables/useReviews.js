@@ -63,6 +63,7 @@ export function useReviews() {
       })
     } catch (error) {
       console.error('Error syncing reviews:', error)
+      // Optional: Notify user of the error or retry
     }
   }
 

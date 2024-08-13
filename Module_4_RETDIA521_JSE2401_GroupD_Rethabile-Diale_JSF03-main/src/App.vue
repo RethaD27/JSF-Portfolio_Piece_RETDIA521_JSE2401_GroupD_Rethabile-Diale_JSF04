@@ -43,19 +43,6 @@
         </button>
       </div>
 
-      <div class="mb-8">
-        <h2 class="text-xl font-bold">Discounted Products</h2>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <li v-for="product in discountedProducts" :key="product.id" class="border p-4 rounded">
-            <h3 class="font-semibold">{{ product.title }}</h3>
-            <p>Original Price: {{ product.price }}</p>
-            <p>Discount: {{ product.discountPercentage }}%</p>
-            <p>Discounted Price: {{ product.discountedPrice.toFixed(2) }}</p>
-            <p>Sale Ends: {{ product.saleEndDate.toLocaleDateString() }}</p>
-          </li>
-        </ul>
-      </div>
-
       <router-view 
         :filteredProducts="filteredProducts" 
         :loading="loading"
@@ -128,10 +115,10 @@ export default {
     const applyDiscounts = () => {
       const shuffled = [...products.value].sort(() => 0.5 - Math.random())
       discountedProducts.value = shuffled.slice(0, 5).map(product => {
-        const discount = Math.floor(Math.random() * 50) + 10
+        const discount = Math.floor(Math.random() * 50) + 10 // 10% to 60% discount
         return {
           ...product,
-          discountPercentage: discount, // 10% to 60% discount
+          discountPercentage: discount,
           discountedPrice: product.price * (1 - discount / 100),
           saleEndDate: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000) // Random date within next 7 days
         }
@@ -175,27 +162,13 @@ export default {
       }
     }
 
-    const submitReview = (productId, review) => {
-      addReview(productId, review)
-    }
-
-    const updateReview = (productId, reviewId, updatedReview) => {
-      editReview(productId, reviewId, updatedReview)
-    }
-
-    const removeReview = (productId, reviewId) => {
-      deleteReview(productId, reviewId)
-    }
-
-    const productReviews = computed(() => getReviewsForProduct(productId))
-
     onMounted(() => {
       fetchProducts()
       fetchCategories()
       checkLoginStatus()
       const savedTheme = localStorage.getItem('theme')
       isDarkMode.value = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      syncReviewsWithAPI() // Sync reviews when the component is mounted
+      syncReviewsWithAPI()
     })
 
     router.beforeEach((to, from, next) => {
@@ -211,6 +184,10 @@ export default {
     provide('isDarkMode', isDarkMode)
     provide('useWishlist', useWishlist)
     provide('useReviews', { reviews, syncReviewsWithAPI })
+    provide('useApp', {
+      filteredProducts: computed(() => filteredProducts.value),
+      discountedProducts: computed(() => discountedProducts.value)
+    })
 
     return {
       categories,
@@ -226,19 +203,13 @@ export default {
       totalItems,
       isDarkMode,
       wishlistCount,
-      discountedProducts,
-      reviews,
-      submitReview,
-      updateReview,
-      removeReview,
-      productReviews
+      discountedProducts
     }
   }
 }
 </script>
 
 <style>
-/* Base styles */
 :root {
   --bg-color: #ffffff;
   --text-color: #333333;
@@ -258,6 +229,4 @@ body {
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-
-/* Add more theme-specific styles as needed */
 </style>
