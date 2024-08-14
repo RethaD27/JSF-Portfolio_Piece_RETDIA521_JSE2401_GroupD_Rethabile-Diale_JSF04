@@ -6,7 +6,11 @@
       <div class="relative">
         <div class="carousel-container overflow-hidden">
           <div class="carousel-track flex transition-transform duration-300 ease-in-out">
-            <div v-for="product in discountedProducts" :key="product.id" class="carousel-item flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2">
+            <div
+              v-for="product in discountedProducts"
+              :key="product.id"
+              class="carousel-item flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2"
+            >
               <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <router-link :to="`/product/${product.id}`" class="block">
                   <img :src="product.image" :alt="product.title" class="w-full h-48 object-cover" />
@@ -21,12 +25,18 @@
             </div>
           </div>
         </div>
-        <button @click="prevSlide" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 ml-2 focus:outline-none">
+        <button
+          @click="prevSlide"
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 ml-2 focus:outline-none"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <button @click="nextSlide" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 mr-2 focus:outline-none">
+        <button
+          @click="nextSlide"
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 mr-2 focus:outline-none"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
@@ -34,8 +44,39 @@
       </div>
     </div>
 
-    <!-- Rest of the Home component content -->
-    <!-- ... -->
+    <!-- Featured Products Grid -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Featured Products</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div
+          v-for="product in filteredProducts"
+          :key="product.id"
+          class="bg-white shadow-md rounded-lg overflow-hidden"
+        >
+          <div class="h-48 overflow-hidden">
+            <router-link :to="`/product/${product.id}`">
+              <img :src="product.image" :alt="product.title" class="w-full h-full object-cover" />
+            </router-link>
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-bold mb-2">
+              <router-link :to="`/product/${product.id}`">{{ product.title }}</router-link>
+            </h3>
+            <p class="text-gray-600 mb-2">{{ product.description }}</p>
+            <p class="text-gray-800 font-bold">{{ "$" + product.price.toFixed(2) }}</p>
+            <div class="flex justify-between mt-4">
+              <AddToCartButton :product="product" />
+              <button
+                @click="addToWishlist(product)"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-75 transition duration-200"
+              >
+                Add to Wishlist
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,7 +91,7 @@ export default {
   },
   setup() {
     const { filteredProducts, discountedProducts } = inject('useApp')
-    const { wishlist, addToWishlist } = inject('useWishlist')
+    const { addToWishlist } = inject('useWishlist')
 
     const currentSlide = ref(0)
     const slideCount = ref(0)
@@ -105,7 +146,6 @@ export default {
     return {
       filteredProducts,
       discountedProducts,
-      wishlist,
       addToWishlist,
       nextSlide,
       prevSlide,

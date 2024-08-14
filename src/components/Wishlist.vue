@@ -65,14 +65,15 @@
 </template>
 
 <script>
-import { inject, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
+import { useCart } from '../composables/useCart'; // Import useCart directly
+import { useWishlist } from '../composables/useWishlist'; // Ensure useWishlist is imported
 
 export default {
   name: 'Wishlist',
   setup() {
-    const { useCart } = inject('useCart');
-    const { wishlist, addToWishlist, removeFromWishlist, clearWishlist } = inject('useWishlist');
-    const { addToCart } = useCart();
+    const cart = useCart();
+    const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
 
     const sortOrder = ref('');
     const filterQuery = ref('');
@@ -101,10 +102,9 @@ export default {
 
     return {
       wishlist,
-      addToWishlist,
       removeFromWishlist,
       clearWishlist,
-      addToCart,
+      addToCart: cart.addToCart, // Use the addToCart function from useCart
       sortOrder,
       filterQuery,
       filteredWishlist

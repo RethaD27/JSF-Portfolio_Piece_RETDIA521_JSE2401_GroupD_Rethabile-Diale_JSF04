@@ -183,6 +183,7 @@ export default {
     provide('totalItems', totalItems)
     provide('isDarkMode', isDarkMode)
     provide('useWishlist', useWishlist)
+    provide('useCart', useCart())
     provide('useReviews', { reviews, syncReviewsWithAPI })
     provide('useApp', {
       filteredProducts: computed(() => filteredProducts.value),
