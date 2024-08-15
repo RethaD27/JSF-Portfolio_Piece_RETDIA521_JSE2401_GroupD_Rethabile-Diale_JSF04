@@ -78,6 +78,12 @@ export default {
     const sortOrder = ref('');
     const filterQuery = ref('');
 
+    const addToCart = (product) => {
+      cart.addToCart(product);
+      // Optionally remove from wishlist after adding to cart
+      removeFromWishlist(product.id);
+    };
+
     const filteredWishlist = computed(() => {
       let filtered = [...wishlist.value];
 
@@ -104,7 +110,7 @@ export default {
       wishlist,
       removeFromWishlist,
       clearWishlist,
-      addToCart: cart.addToCart, // Use the addToCart function from useCart
+      addToCart, // Use the addToCart function defined in the setup
       sortOrder,
       filterQuery,
       filteredWishlist
