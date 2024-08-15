@@ -8,9 +8,14 @@
   >
     <div class="container mx-auto flex justify-between items-center p-4">
       <div class="text-2xl font-bold swift-cart-store">SwiftCart Store</div>
-      <div class="hidden md:flex">
+      <div class="hidden md:flex items-center">
         <router-link to="/" class="mr-4 hover:underline">Home</router-link>
-        <router-link to="/wishlist" v-if="isLoggedIn" class="mr-4 hover:underline">Wishlist</router-link>
+        <router-link to="/wishlist" v-if="isLoggedIn" class="relative mr-4 hover:underline">
+          <i class="fas fa-heart"></i>
+          <span v-if="wishlistCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+            {{ wishlistCount }}
+          </span>
+        </router-link>
         <router-link to="/cart" v-if="isLoggedIn" class="mr-4 hover:underline">
           Cart ({{ totalItems }})
         </router-link>
@@ -49,7 +54,10 @@
       ]"
     >
       <router-link to="/" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">Home</router-link>
-      <router-link to="/wishlist" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">Wishlist</router-link>
+      <router-link to="/wishlist" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">
+        <i class="fas fa-heart"></i>
+        Wishlist <span v-if="wishlistCount > 0">({{ wishlistCount }})</span>
+      </router-link>
       <router-link to="/cart" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">
         Cart ({{ totalItems }})
       </router-link>
@@ -65,10 +73,11 @@
 </template>
 
 <script>
-import { ref, inject } from 'vue'
+import { ref, inject, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useComparison } from '../composables/useComparison'
+import { useWishlist } from '../composables/useWishlist'
 import ThemeToggle from './ThemeToggle.vue'
 
 export default {
@@ -80,9 +89,11 @@ export default {
     const open = ref(false)
     const router = useRouter()
     const isLoggedIn = inject('isLoggedIn')
+    const isDarkMode = ref(false)
     const { clearCart, totalItems } = useCart()
     const { comparisonCount } = useComparison()
-    const isDarkMode = ref(false)
+    const { wishlist } = useWishlist()
+    const wishlistCount = computed(() => wishlist.value.length)
 
     const toggleMenu = () => {
       open.value = !open.value
@@ -102,6 +113,7 @@ export default {
       logout,
       totalItems,
       comparisonCount,
+      wishlistCount,
       isDarkMode
     }
   }
