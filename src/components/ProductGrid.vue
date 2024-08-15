@@ -60,7 +60,7 @@ export default {
   components: {
     Loading,
     AddToCartButton,
-    ComparisonButton
+    ComparisonButton,
   },
   props: {
     filteredProducts: {
