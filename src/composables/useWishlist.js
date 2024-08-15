@@ -1,7 +1,10 @@
 import { ref, watch } from 'vue'
+import { useCart } from './useCart' // Import your useCart composable
 
 export function useWishlist() {
   const wishlist = ref([])
+
+  const { addToCart } = useCart() // Get addToCart from useCart
 
   const addToWishlist = (product) => {
     if (!wishlist.value.some(item => item.id === product.id)) {
@@ -39,6 +42,11 @@ export function useWishlist() {
     }
   }
 
+  const moveToCart = (product) => {
+    addToCart(product)
+    removeFromWishlist(product.id)
+  }
+
   watch(wishlist, () => {
     saveWishlistToStorage()
   }, { deep: true })
@@ -51,6 +59,7 @@ export function useWishlist() {
     addToWishlist,
     removeFromWishlist,
     clearWishlist,
-    syncWishlistWithAPI
+    syncWishlistWithAPI,
+    moveToCart // Expose the moveToCart function
   }
 }
