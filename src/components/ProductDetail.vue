@@ -117,7 +117,9 @@ export default {
   name: 'ProductDetail',
   components: {
     AddToCartButton,
+    
     ComparisonButton
+
   },
   setup() {
     const route = useRoute()

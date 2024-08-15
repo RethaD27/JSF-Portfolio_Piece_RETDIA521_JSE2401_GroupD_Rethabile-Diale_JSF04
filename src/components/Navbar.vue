@@ -3,31 +3,41 @@
     class="fixed w-full shadow-lg z-10"
     :class="[
       'bg-purple-900 text-purple-400',
-      { 'dark:bg-gray-800 dark:text-gray-400': isDarkMode }
+      { 'dark:bg-gray-800 dark:text-gray-400': isDarkMode },
     ]"
   >
     <div class="container mx-auto flex justify-between items-center p-4">
       <div class="text-2xl font-bold swift-cart-store">SwiftCart Store</div>
       <div class="hidden md:flex items-center">
         <router-link to="/" class="mr-4 hover:underline">Home</router-link>
-        <router-link to="/wishlist" v-if="isLoggedIn" class="relative mr-4 hover:underline">
-          <i class="fas fa-heart"></i>
-          <span v-if="wishlistCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
-            {{ wishlistCount }}
-          </span>
+        <router-link
+          to="/wishlist"
+          v-if="isLoggedIn"
+          class="mr-4 hover:underline"
+        >
+          Wishlist ({{ wishlistCount }})
         </router-link>
         <router-link to="/cart" v-if="isLoggedIn" class="mr-4 hover:underline">
           Cart ({{ totalItems }})
         </router-link>
-        <router-link to="/comparison" v-if="isLoggedIn" class="mr-4 hover:underline">
+        <router-link
+          to="/comparison"
+          v-if="isLoggedIn"
+          class="mr-4 hover:underline"
+        >
           Compare ({{ comparisonCount }})
         </router-link>
-        <router-link v-if="!isLoggedIn" to="/login" class="hover:underline">Login</router-link>
+        <router-link v-if="!isLoggedIn" to="/login" class="hover:underline"
+          >Login</router-link
+        >
         <button v-else @click="logout" class="hover:underline">Logout</button>
       </div>
       <div class="flex items-center">
         <ThemeToggle @theme-changed="isDarkMode = $event" />
-        <button @click="toggleMenu" class="md:hidden text-white dark:text-gray-400 ml-4">
+        <button
+          @click="toggleMenu"
+          class="md:hidden text-white dark:text-gray-400 ml-4"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -50,22 +60,46 @@
       class="md:hidden mt-4"
       :class="[
         'bg-purple-500 dark:bg-gray-700',
-        { 'dark:text-gray-400': isDarkMode }
+        { 'dark:text-gray-400': isDarkMode },
       ]"
     >
-      <router-link to="/" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">Home</router-link>
-      <router-link to="/wishlist" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">
-        <i class="fas fa-heart"></i>
-        Wishlist <span v-if="wishlistCount > 0">({{ wishlistCount }})</span>
+      <router-link
+        to="/"
+        class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
+        >Home</router-link
+      >
+      <router-link
+        to="/wishlist"
+        v-if="isLoggedIn"
+        class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
+      >
+        Wishlist ({{ wishlistCount }})
       </router-link>
-      <router-link to="/cart" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">
+      <router-link
+        to="/cart"
+        v-if="isLoggedIn"
+        class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
+      >
         Cart ({{ totalItems }})
       </router-link>
-      <router-link to="/comparison" v-if="isLoggedIn" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">
+      <router-link
+        to="/comparison"
+        v-if="isLoggedIn"
+        class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
+      >
         Compare ({{ comparisonCount }})
       </router-link>
-      <router-link v-if="!isLoggedIn" to="/login" class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">Login</router-link>
-      <button v-else @click="logout" class="block w-full text-left p-2 hover:bg-yellow-400 dark:hover:bg-gray-600">
+      <router-link
+        v-if="!isLoggedIn"
+        to="/login"
+        class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
+        >Login</router-link
+      >
+      <button
+        v-else
+        @click="logout"
+        class="block w-full text-left p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
+      >
         Logout
       </button>
     </div>
@@ -73,38 +107,38 @@
 </template>
 
 <script>
-import { ref, inject, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useCart } from '../composables/useCart'
-import { useComparison } from '../composables/useComparison'
-import { useWishlist } from '../composables/useWishlist'
-import ThemeToggle from './ThemeToggle.vue'
+import { ref, inject, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useCart } from "../composables/useCart";
+import { useComparison } from "../composables/useComparison";
+import { useWishlist } from "../composables/useWishlist";
+import ThemeToggle from "./ThemeToggle.vue";
 
 export default {
-  name: 'Navbar',
+  name: "Navbar",
   components: {
-    ThemeToggle
+    ThemeToggle,
   },
   setup() {
-    const open = ref(false)
-    const router = useRouter()
-    const isLoggedIn = inject('isLoggedIn')
-    const isDarkMode = ref(false)
-    const { clearCart, totalItems } = useCart()
-    const { comparisonCount } = useComparison()
-    const { wishlist } = useWishlist()
-    const wishlistCount = computed(() => wishlist.value.length)
+    const open = ref(false);
+    const router = useRouter();
+    const isLoggedIn = inject("isLoggedIn");
+    const isDarkMode = ref(false);
+    const { clearCart, totalItems } = useCart();
+    const { comparisonCount } = useComparison();
+    const { wishlist } = useWishlist();
+    const wishlistCount = computed(() => wishlist.value.length);
 
     const toggleMenu = () => {
-      open.value = !open.value
-    }
+      open.value = !open.value;
+    };
 
     const logout = () => {
-      localStorage.removeItem('token')
-      isLoggedIn.value = false
-      clearCart()
-      router.push('/')
-    }
+      localStorage.removeItem("token");
+      isLoggedIn.value = false;
+      clearCart();
+      router.push("/");
+    };
 
     return {
       open,
@@ -114,15 +148,15 @@ export default {
       totalItems,
       comparisonCount,
       wishlistCount,
-      isDarkMode
-    }
-  }
-}
+      isDarkMode,
+    };
+  },
+};
 </script>
 
 <style scoped>
 .swift-cart-store {
-  font-family: 'Brush Script MT', cursive;
+  font-family: "Brush Script MT", cursive;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: 1px;
   background: linear-gradient(45deg, #ff79c6, #bd93f9);
