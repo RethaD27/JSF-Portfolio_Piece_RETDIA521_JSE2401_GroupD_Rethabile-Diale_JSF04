@@ -111,6 +111,7 @@ import { useRoute, useRouter } from 'vue-router'
 import AddToCartButton from './AddToCartButton.vue'
 import ComparisonButton from './ComparisonButton.vue'
 import { useReviews } from '../composables/useReviews.js'
+import { useWishlist } from '../composables/useWishlist.js' // Import your wishlist composable
 
 export default {
   name: 'ProductDetail',
@@ -133,6 +134,9 @@ export default {
 
     // Using the useReviews composable
     const { reviews, addReview, editReview, deleteReview, getReviewsForProduct } = useReviews()
+
+    // Using the useWishlist composable
+    const { addToWishlist: addProductToWishlist } = useWishlist()
 
     const productId = computed(() => route.params.id)
 
@@ -226,11 +230,20 @@ export default {
     }
 
     const addToWishlist = (product) => {
-      // Add product to wishlist logic
-      notification.value = 'Added to wishlist!'
-      setTimeout(() => {
-        notification.value = ''
-      }, 3000)
+      if (isLoggedIn.value) {
+        addProductToWishlist(product)
+        notification.value = 'Added to wishlist!'
+        setTimeout(() => {
+          notification.value = ''
+        }, 3000)
+      } else {
+        // Redirect to login or show login prompt
+        router.push({ name: 'Login' }) // Assuming you have a login route
+        notification.value = 'Please log in to add items to your wishlist.'
+        setTimeout(() => {
+          notification.value = ''
+        }, 3000)
+      }
     }
 
     onMounted(() => {
