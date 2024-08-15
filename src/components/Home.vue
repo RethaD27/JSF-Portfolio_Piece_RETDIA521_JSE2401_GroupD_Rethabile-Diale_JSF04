@@ -1,11 +1,53 @@
 <template>
   <div class="container mx-auto py-8 px-4">
+    <!-- Wishlist Carousel -->
+    <div v-if="isLoggedIn && wishlist.length > 0" class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Your Wishlist</h2>
+      <div class="relative">
+        <div class="carousel-container overflow-hidden">
+          <div ref="wishlistCarouselTrack" class="carousel-track flex transition-transform duration-300 ease-in-out">
+            <div
+              v-for="product in wishlist"
+              :key="product.id"
+              class="carousel-item flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2"
+            >
+              <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <router-link :to="`/product/${product.id}`" class="block">
+                  <img :src="product.image" :alt="product.title" class="w-full h-48 object-cover" />
+                  <div class="p-4">
+                    <h3 class="text-lg font-bold truncate">{{ product.title }}</h3>
+                    <p class="text-gray-800 font-bold">${{ product.price.toFixed(2) }}</p>
+                  </div>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          @click="prevWishlistSlide"
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 ml-2 focus:outline-none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          @click="nextWishlistSlide"
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 mr-2 focus:outline-none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
     <!-- Discounted Products Carousel -->
     <div class="mb-8">
       <h2 class="text-2xl font-bold mb-4">Discounted Products</h2>
       <div class="relative">
         <div class="carousel-container overflow-hidden">
-          <div class="carousel-track flex transition-transform duration-300 ease-in-out">
+          <div ref="carouselTrack" class="carousel-track flex transition-transform duration-300 ease-in-out">
             <div
               v-for="product in discountedProducts"
               :key="product.id"
@@ -83,6 +125,7 @@
 <script>
 import { ref, inject, onMounted, onUnmounted } from 'vue'
 import AddToCartButton from './components/AddToCartButton.vue'
+import { useWishlist } from '../composables/useWishlist'
 
 export default {
   name: 'Home',
@@ -91,16 +134,26 @@ export default {
   },
   setup() {
     const { filteredProducts, discountedProducts } = inject('useApp')
-    const { addToWishlist } = inject('useWishlist')
+    const { wishlist, addToWishlist } = useWishlist()
+    const isLoggedIn = inject('isLoggedIn')
 
     const currentSlide = ref(0)
+    const currentWishlistSlide = ref(0)
     const slideCount = ref(0)
+    const wishlistSlideCount = ref(0)
     const carouselTrack = ref(null)
+    const wishlistCarouselTrack = ref(null)
 
     const updateSlideCount = () => {
       const containerWidth = carouselTrack.value?.offsetWidth || 0
       const itemWidth = containerWidth / getVisibleSlides()
       slideCount.value = Math.ceil(discountedProducts.value.length * itemWidth / containerWidth)
+    }
+
+    const updateWishlistSlideCount = () => {
+      const containerWidth = wishlistCarouselTrack.value?.offsetWidth || 0
+      const itemWidth = containerWidth / getVisibleSlides()
+      wishlistSlideCount.value = Math.ceil(wishlist.value.length * itemWidth / containerWidth)
     }
 
     const getVisibleSlides = () => {
@@ -116,11 +169,10 @@ export default {
         const slideWidth = 100 / getVisibleSlides()
         carouselTrack.value.style.transform = `translateX(-${currentSlide.value * slideWidth}%)`
       }
-    }
-
-    const nextSlide = () => {
-      currentSlide.value = (currentSlide.value + 1) % slideCount.value
-      updateCarousel()
+      if (wishlistCarouselTrack.value) {
+        const slideWidth = 100 / getVisibleSlides()
+        wishlistCarouselTrack.value.style.transform = `translateX(-${currentWishlistSlide.value * slideWidth}%)`
+      }
     }
 
     const prevSlide = () => {
@@ -128,28 +180,45 @@ export default {
       updateCarousel()
     }
 
-    const handleResize = () => {
-      updateSlideCount()
+    const nextSlide = () => {
+      currentSlide.value = (currentSlide.value + 1) % slideCount.value
+      updateCarousel()
+    }
+
+    const prevWishlistSlide = () => {
+      currentWishlistSlide.value = (currentWishlistSlide.value - 1 + wishlistSlideCount.value) % wishlistSlideCount.value
+      updateCarousel()
+    }
+
+    const nextWishlistSlide = () => {
+      currentWishlistSlide.value = (currentWishlistSlide.value + 1) % wishlistSlideCount.value
       updateCarousel()
     }
 
     onMounted(() => {
-      carouselTrack.value = document.querySelector('.carousel-track')
       updateSlideCount()
-      window.addEventListener('resize', handleResize)
+      updateWishlistSlideCount()
+      window.addEventListener('resize', updateSlideCount)
+      window.addEventListener('resize', updateWishlistSlideCount)
     })
 
     onUnmounted(() => {
-      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('resize', updateSlideCount)
+      window.removeEventListener('resize', updateWishlistSlideCount)
     })
 
     return {
       filteredProducts,
       discountedProducts,
+      wishlist,
       addToWishlist,
-      nextSlide,
+      isLoggedIn,
       prevSlide,
-      carouselTrack
+      nextSlide,
+      prevWishlistSlide,
+      nextWishlistSlide,
+      carouselTrack,
+      wishlistCarouselTrack
     }
   }
 }
@@ -157,8 +226,7 @@ export default {
 
 <style scoped>
 .carousel-container {
-  position: relative;
-  width: 100%;
+  overflow: hidden;
 }
 
 .carousel-track {
@@ -168,5 +236,6 @@ export default {
 
 .carousel-item {
   flex-shrink: 0;
+  padding: 8px;
 }
 </style>
