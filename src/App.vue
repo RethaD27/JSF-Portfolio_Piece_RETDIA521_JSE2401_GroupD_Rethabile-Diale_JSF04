@@ -169,6 +169,8 @@ export default {
       const savedTheme = localStorage.getItem('theme')
       isDarkMode.value = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
       syncReviewsWithAPI()
+      const { syncWishlistWithAPI } = useWishlist()
+      syncWishlistWithAPI()
     })
 
     router.beforeEach((to, from, next) => {
