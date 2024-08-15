@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, provide } from 'vue'
+import { ref, computed, onMounted, provide, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
@@ -63,6 +63,7 @@ import WishlistWidget from './components/WishlistWidget.vue'
 import { useCart } from './composables/useCart'
 import { useWishlist } from './composables/useWishlist'
 import { useReviews } from './composables/useReviews'
+import { useAuth } from './composables/useAuth'
 
 export default {
   name: 'App',
@@ -75,6 +76,7 @@ export default {
     const { loadCart, totalItems } = useCart()
     const { wishlist, wishlistCount } = useWishlist()
     const { reviews, syncReviewsWithAPI, addReview, editReview, deleteReview, getReviewsForProduct } = useReviews()
+    const { isAuthenticated, checkAuth, logout } = useAuth()
 
     const products = ref([])
     const categories = ref([])
@@ -163,6 +165,7 @@ export default {
     }
 
     onMounted(() => {
+      checkAuth()
       fetchProducts()
       fetchCategories()
       checkLoginStatus()
@@ -173,6 +176,12 @@ export default {
       syncWishlistWithAPI()
     })
 
+    watch(isAuthenticated, (newValue) => {
+      if (newValue) {
+        loadCart()
+      }
+    })
+
     router.beforeEach((to, from, next) => {
       if (to.path === '/comparison' && !isLoggedIn.value) {
         next('/login')
@@ -181,6 +190,8 @@ export default {
       }
     })
 
+    provide('isAuthenticated', isAuthenticated)
+    provide('logout', logout)
     provide('isLoggedIn', isLoggedIn)
     provide('totalItems', totalItems)
     provide('isDarkMode', isDarkMode)
