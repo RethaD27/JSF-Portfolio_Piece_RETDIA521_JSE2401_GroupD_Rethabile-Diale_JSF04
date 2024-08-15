@@ -69,6 +69,7 @@ import { useRouter, useRoute } from 'vue-router'
 import EyeIcon from '../icons/EyeIcon.vue'
 import EyeOffIcon from '../icons/EyeOffIcon.vue'
 import LockClosedIcon from '../icons/LockClosedIcon.vue'
+import { useAuth } from '../composables/useAuth'
 
 export default {
   name: 'Login',
@@ -78,6 +79,7 @@ export default {
     LockClosedIcon
   },
   setup() {
+    const { login, isAuthenticated } = useAuth()
     const username = ref('')
     const password = ref('')
     const firstName = ref('')
@@ -111,29 +113,11 @@ export default {
 
       try {
         successMessage.value = 'Authenticating...'
-        const response = await fetch('https://fakestoreapi.com/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: username.value,
-            password: password.value,
-            firstName: firstName.value,
-            lastName: lastName.value
-          })
-        })
+        const success = await login(username.value, password.value, firstName.value, lastName.value)
 
-        if (!response.ok) {
+        if (!success) {
           throw new Error('Login failed')
         }
-
-        const data = await response.json()
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userId', data.userId) // Assuming the API returns a userId
-        localStorage.setItem('userFirstName', firstName.value)
-        localStorage.setItem('userLastName', lastName.value)
-        token.value = data.token
 
         successMessage.value = 'Login successful! Redirecting...'
 
