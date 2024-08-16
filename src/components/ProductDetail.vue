@@ -110,6 +110,7 @@ import { ref, computed, onMounted, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AddToCartButton from './AddToCartButton.vue'
 import ComparisonButton from './ComparisonButton.vue'
+import WishlistButton from './WishlistButton.vue'
 import { useReviews } from '../composables/useReviews.js'
 import { useWishlist } from '../composables/useWishlist.js' // Import your wishlist composable
 
@@ -117,7 +118,7 @@ export default {
   name: 'ProductDetail',
   components: {
     AddToCartButton,
-    
+    WishlistButton,
     ComparisonButton
 
   },
