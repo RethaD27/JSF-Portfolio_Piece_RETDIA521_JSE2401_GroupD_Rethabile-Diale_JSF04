@@ -1,85 +1,90 @@
 # SwiftCart Store
+SwiftCart Store is an e-commerce platform designed for users to browse, search, and purchase products online. The application provides features like product filtering, sorting, wishlist management, and product comparison, with a focus on a seamless user experience. Built using Vue.js with Tailwind CSS for styling, the application also integrates user authentication and cart management.
 
-SwiftCart is a modern e-commerce application built with Vue for the frontend and designed to provide users with a seamless shopping experience. This project allows users to browse products, filter them by categories, search for specific items, sort by price, and view detailed information about each product.
-
+## Table of Contents
+* Technologies Used
+* Setup Instructions
+* Hosted Application
+* Project Explainer Video
+* Code Repository
+* External Resources
+  * Contributions to the Project
+  * Online Resources
+    
 ## Technologies Used
-
-- **Vue.js 3**: A progressive JavaScript framework used for building the user interface.
-- **Vue Router**: Provides routing capabilities for navigating between different views in the application.
-- **Tailwind CSS**: A utility-first CSS framework used for styling the application.
-- **API**: Fake Store API (`https://fakestoreapi.com`) for fetching product and category data.
-
+* Vue.js: The main framework used for building the front-end of the application.
+* Vite: The build tool used instead of Vue CLI for faster and more efficient development.
+* Tailwind CSS: A utility-first CSS framework used for styling the application.
+* Vue Router: For handling client-side routing in the application.
+* FakeStoreAPI: A mock API used to fetch product and category data.
+  
 ## Setup Instructions
+To run the project locally, follow these steps:
 
-### Prerequisites
+1. ### Clone the repository:
+git clone https://github.com/yourusername/swiftcart-store.git
+cd swiftcart-store
 
-Before you begin, ensure you have the following installed:
+2. ### Install dependencies:
+Ensure you have Node.js installed, then run:
+npm install
 
-- **Node.js**
-- **npm** 
+3. ### Start the development server:
+npm run dev
+This will start the application in development mode and it should be accessible at http://localhost:3000.
 
-### Clone the Repository
+4. ### Build for production:
+To create a production-ready build:
+npm run build
 
-1. Clone the repository to your local machine:
+## Hosted Application
+The live version of the SwiftCart Store can be accessed at: https://swiftcart-store.example.com
 
-   ```bash
-   git clone https://github.com/your-username/swiftcart.git
-   ```
+## Project Explainer Video
+A comprehensive video walkthrough of the project is available here: Project Explainer Video
 
-2. Navigate to the project directory:
+## Code Repository
+The source code for this project is hosted on GitHub: SwiftCart Store Repository
 
-   ```bash
-   cd swiftcart
-   ```
+## External Resources
+### Contributions to the Project
+* #### FakeStoreAPI:
 
-### Install Dependencies
+  * URL: https://fakestoreapi.com/
+  * Contribution: This external API was used to fetch the product and category data displayed in the store. The API provided a range of products 
+    with different categories, which were used to showcase the application's filtering, sorting, and product detail features.
+    
+* #### Tailwind CSS Documentation:
 
-1. Install the necessary dependencies using npm or yarn:
+  * URL: https://tailwindcss.com/docs
+  * Contribution: The Tailwind CSS documentation was referenced extensively to implement the responsive design and utility classes used t 
+    hroughout the project.
+    
+* #### Vue.js Documentation:
 
-   ```bash
-   npm install
-   ```
+  * URL: https://vuejs.org/v2/guide/
+  * Contribution: The official Vue.js documentation was used to guide the development of the components, reactivity system, and routing in the 
+    application.
+    
+* #### Vite Documentation:
 
-### Run the Development Server
+  * URL: https://vitejs.dev/guide/
+  * Contribution: Vite's documentation was crucial in setting up the build environment and optimizing the development workflow.
 
-1. Start the development server:
+    
+## Online Resources
+* ### Stack Overflow:
 
-   ```bash
-   npm run dev
-   ```
+  * URL: https://stackoverflow.com/
+  * Contribution: Stack Overflow was used to troubleshoot various issues encountered during development, including handling reactivity in Vue.js 
+    and debugging Vue Router.
+    
+* ### Claude AI:
 
-2. Open your browser and navigate to `http://localhost:5000` to view the application.
+  * Contribution: Claude AI was used for brainstorming ideas, refining concepts, and troubleshooting issues during the development of the 
+    application.
+    
+* ### LMS Content:
 
-### Build for Production
-
-1. To build the application for production, run:
-
-   ```bash
-   npm run build
-   ```
-
-2. The production build will be output to the `public` directory, and you can deploy it to your preferred hosting service.
-
-## Usage Examples
-### Browsing Products
-Upon loading the application, you will be presented with a grid of products. You can browse through the products, view their images, prices, categories, and ratings.
-
-### Filtering Products by Category
-To filter products by category, use the dropdown menu at the top of the page. Select a category, and the products will be filtered accordingly.
-
-### Searching for Products
-To search for a specific product, enter a keyword in the search input field and click the "Search" button. The products will be filtered based on the search query.
-
-### Sorting Products by Price
-To sort products by price, use the sorting dropdown menu. You can sort products in ascending or descending order, or reset to the default order.
-
-### Resetting Filters and Sorting
-To reset all filters and sorting options, click the "Reset" button. This will clear the search query, selected category, and sort order.
-
-### Adding to Favorites and Cart
-You can mark a product as a favorite by clicking the heart icon on the product card. To add a product to the cart, click the "Add To Cart" button.
-
-## Acknowledgments
-
-- **Fake Store API**: For providing the mock data used in this project.
-- **Tailwind CSS**: For the utility-first approach to styling.
+  * Contribution: The content from the Learning Management System (LMS) was a key resource for learning and applying best practices in Vue.js and 
+    project development.
