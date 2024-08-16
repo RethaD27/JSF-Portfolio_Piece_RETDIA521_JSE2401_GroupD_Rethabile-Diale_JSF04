@@ -7,7 +7,7 @@ SwiftCart Store is an e-commerce platform designed for users to browse, search, 
 * Hosted Application
 * Project Explainer Video
 * Code Repository
-* External Resources
+* [External Resources](##external-resources)
   * Contributions to the Project
   * Online Resources
     
