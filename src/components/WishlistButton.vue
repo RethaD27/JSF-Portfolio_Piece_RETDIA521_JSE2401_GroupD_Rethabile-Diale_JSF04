@@ -1,7 +1,7 @@
 <template>
     <button
       @click="addToWishlist"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-75 transition duration-200"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200"
       :disabled="!isLoggedIn"
     >
       {{ isLoggedIn ? 'Add To Wishlist' : 'Login to Add' }}
