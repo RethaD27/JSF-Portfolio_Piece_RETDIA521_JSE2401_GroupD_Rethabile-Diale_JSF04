@@ -75,16 +75,18 @@ The source code for this project is hosted on GitHub: SwiftCart Store Repository
 ## Online Resources
 * ### Stack Overflow:
 
-  * URL: https://stackoverflow.com/
+  * URL: https://stackoverflow.com/users/25120914/rethabile-diale
   * Contribution: Stack Overflow was used to troubleshoot various issues encountered during development, including handling reactivity in Vue.js 
     and debugging Vue Router.
     
 * ### Claude AI:
 
+  * URL: https://claude.ai/new
   * Contribution: Claude AI was used for brainstorming ideas, refining concepts, and troubleshooting issues during the development of the 
     application.
     
 * ### LMS Content:
 
+  * URL: https://learn.codespace.co.za/courses/171/modules/603/lessons/2587
   * Contribution: The content from the Learning Management System (LMS) was a key resource for learning and applying best practices in Vue.js and 
     project development.
