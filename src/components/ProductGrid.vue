@@ -37,6 +37,7 @@
             </svg>
           </button>
           <AddToCartButton :product="product" />
+          <WishlistButton :product="product" />
           <ComparisonButton :product="product" />
         </div>
       </div>
@@ -53,6 +54,7 @@
 import { ref, onMounted } from 'vue'
 import Loading from './Loading.vue'
 import AddToCartButton from './AddToCartButton.vue'
+import WishlistButton from './WishlistButton.vue'
 import ComparisonButton from './ComparisonButton.vue'
 
 export default {
@@ -60,6 +62,7 @@ export default {
   components: {
     Loading,
     AddToCartButton,
+    WishlistButton,
     ComparisonButton,
   },
   props: {
