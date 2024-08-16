@@ -55,6 +55,11 @@
 </template>
 
 <script>
+/**
+ * @fileoverview Main App component for the e-commerce application.
+ * @component
+ */
+
 import { ref, computed, onMounted, provide, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Navbar from './components/Navbar.vue'
@@ -65,6 +70,21 @@ import { useWishlist } from './composables/useWishlist'
 import { useReviews } from './composables/useReviews'
 import { useAuth } from './composables/useAuth'
 
+/**
+ * @typedef {Object} Product
+ * @property {number} id
+ * @property {string} title
+ * @property {number} price
+ * @property {string} category
+ * @property {string} description
+ * @property {string} image
+ */
+
+/**
+ * @vue-component
+ * @name App
+ * @description Main application component that handles product filtering, sorting, and overall app state.
+ */
 export default {
   name: 'App',
   components: {
@@ -78,25 +98,74 @@ export default {
     const { reviews, syncReviewsWithAPI, addReview, editReview, deleteReview, getReviewsForProduct } = useReviews()
     const { isAuthenticated, checkAuth, logout } = useAuth()
 
+    /**
+     * @type {import('vue').Ref<Array<Product>>}
+     * @description Ref containing the list of products.
+     */
     const products = ref([])
+
+    /**
+     * @type {import('vue').Ref<Array<string>>}
+     * @description Ref containing the list of product categories.
+     */
     const categories = ref([])
+
+    /**
+     * @type {import('vue').Ref<string>}
+     * @description Ref containing the current search query.
+     */
     const searchQuery = ref('')
+
+    /**
+     * @type {import('vue').Ref<string>}
+     * @description Ref containing the currently selected category.
+     */
     const selectedCategory = ref('')
+
+    /**
+     * @type {import('vue').Ref<string>}
+     * @description Ref containing the current sort order.
+     */
     const sortOrder = ref('')
+
+    /**
+     * @type {import('vue').Ref<boolean>}
+     * @description Ref indicating whether the app is in a loading state.
+     */
     const loading = ref(true)
+
+    /**
+     * @type {import('vue').Ref<boolean>}
+     * @description Ref indicating whether the user is logged in.
+     */
     const isLoggedIn = ref(false)
+
+    /**
+     * @type {import('vue').Ref<boolean>}
+     * @description Ref indicating whether dark mode is active.
+     */
     const isDarkMode = ref(false)
+
     const router = useRouter()
 
+    /**
+     * @type {import('vue').Ref<Array<Product>>}
+     * @description Ref containing the list of discounted products.
+     */
     const discountedProducts = ref([])
 
+    /**
+     * @async
+     * @function fetchProducts
+     * @description Fetches products from the API and applies discounts.
+     */
     const fetchProducts = async () => {
       loading.value = true
       try {
         const response = await fetch('https://fakestoreapi.com/products')
         const data = await response.json()
         products.value = data
-        applyDiscounts() // Apply discounts after fetching products
+        applyDiscounts()
       } catch (error) {
         console.error('Error fetching products:', error)
       } finally {
@@ -104,6 +173,11 @@ export default {
       }
     }
 
+    /**
+     * @async
+     * @function fetchCategories
+     * @description Fetches product categories from the API.
+     */
     const fetchCategories = async () => {
       try {
         const response = await fetch('https://fakestoreapi.com/products/categories')
@@ -114,29 +188,42 @@ export default {
       }
     }
 
+    /**
+     * @function applyDiscounts
+     * @description Applies random discounts to a subset of products.
+     */
     const applyDiscounts = () => {
       const shuffled = [...products.value].sort(() => 0.5 - Math.random())
-      discountedProducts.value = shuffled.slice(0, 5).map(product => {
-        const discount = Math.floor(Math.random() * 50) + 10 // 10% to 60% discount
-        return {
-          ...product,
-          discountPercentage: discount,
-          discountedPrice: product.price * (1 - discount / 100),
-          saleEndDate: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000) // Random date within next 7 days
-        }
-      })
+      discountedProducts.value = shuffled.slice(0, 5).map(product => ({
+        ...product,
+        discountPercentage: Math.floor(Math.random() * 50) + 10,
+        discountedPrice: product.price * (1 - (Math.floor(Math.random() * 50) + 10) / 100),
+        saleEndDate: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000)
+      }))
     }
 
+    /**
+     * @function searchProducts
+     * @description Triggers product search based on the current search query.
+     */
     const searchProducts = () => {
       // Vue's reactivity will handle the filtering
     }
 
+    /**
+     * @function resetFiltersAndSort
+     * @description Resets all filters and sorting options.
+     */
     const resetFiltersAndSort = () => {
       selectedCategory.value = ''
       sortOrder.value = ''
       searchQuery.value = ''
     }
 
+    /**
+     * @type {import('vue').ComputedRef<Array<Product>>}
+     * @description Computed property that returns filtered and sorted products.
+     */
     const filteredProducts = computed(() => {
       let prods = [...products.value]
       if (selectedCategory.value) {
@@ -157,6 +244,10 @@ export default {
       return prods
     })
 
+    /**
+     * @function checkLoginStatus
+     * @description Checks and updates the user's login status.
+     */
     const checkLoginStatus = () => {
       isLoggedIn.value = !!localStorage.getItem('token')
       if (isLoggedIn.value) {
@@ -190,6 +281,7 @@ export default {
       }
     })
 
+    // Provide values to child components
     provide('isAuthenticated', isAuthenticated)
     provide('logout', logout)
     provide('isLoggedIn', isLoggedIn)
