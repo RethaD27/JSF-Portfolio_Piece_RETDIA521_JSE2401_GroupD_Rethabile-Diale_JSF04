@@ -2,7 +2,7 @@
 SwiftCart Store is an e-commerce platform designed for users to browse, search, and purchase products online. The application provides features like product filtering, sorting, wishlist management, and product comparison, with a focus on a seamless user experience. Built using Vue.js with Tailwind CSS for styling, the application also integrates user authentication and cart management.
 
 ## Table of Contents
-* Technologies Used
+* [Technologies Used](##technologies-used)
 * Setup Instructions
 * Hosted Application
 * Project Explainer Video
