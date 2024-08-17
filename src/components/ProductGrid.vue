@@ -3,13 +3,13 @@
     <Loading />
   </div>
   <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-20">
-    <div v-for="product in filteredProducts" :key="product.id" class="card-container bg-white shadow-md rounded-lg overflow-hidden border p-4 cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+    <div v-for="product in filteredProducts" :key="product.id" class="card-container bg-secondary shadow-md rounded-lg overflow-hidden border p-4 cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
       <router-link :to="`/product/${product.id}`" class="flex justify-center items-center">
         <img :src="product.image" :alt="product.title" class="w-full h-48 object-contain mb-5 rounded" />
       </router-link>
       <div class="card-content p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-bold mb-2">{{ product.title }}</h3>
-        <p class="text-gray-700 font-bold mb-2">${{ product.price.toFixed(2) }}</p>
+        <h3 class="text-lg font-bold mb-2 text-primary">{{ product.title }}</h3>
+        <p class="text-secondary font-bold mb-2">${{ product.price.toFixed(2) }}</p>
         <p class="inline-flex items-center rounded-md bg-blue-50 px-1 py-0 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700">{{ product.category }}</p>
         <div class="flex items-center mb-4">
           <div class="flex">
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import Loading from './Loading.vue'
 import AddToCartButton from './AddToCartButton.vue'
 import WishlistButton from './WishlistButton.vue'
@@ -77,6 +77,7 @@ export default {
   },
   setup() {
     const favorites = ref([])
+    const isDarkMode = inject('isDarkMode')
 
     onMounted(() => {
       const storedFavorites = localStorage.getItem('favorites')
@@ -101,7 +102,8 @@ export default {
 
     return {
       toggleFavorite,
-      isFavorite
+      isFavorite,
+      isDarkMode
     }
   }
 }
@@ -114,5 +116,17 @@ export default {
 
 .card-container:hover {
   transform: translateY(-5px);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
 }
 </style>
