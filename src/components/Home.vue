@@ -2,7 +2,8 @@
   <div class="container mx-auto py-8 px-4">
     <!-- Featured Products Grid -->
     <div class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">Featured Products</h2>
+      <h2 class="text-2xl font-bold mb-4">Featured Products
+      </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div
           v-for="product in filteredProducts"
