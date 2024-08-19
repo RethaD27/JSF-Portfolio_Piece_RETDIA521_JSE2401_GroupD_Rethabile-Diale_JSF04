@@ -7,7 +7,8 @@
     ]"
   >
     <div class="container mx-auto flex justify-between items-center p-4">
-      <div class="text-2xl font-bold swift-cart-store">SwiftCart Store</div>
+      <div class="text-2xl font-bold rapid-cart-boutique"><i class="fa-solid fa-crown text-2xl mr-2"></i>
+        RapidCart Boutique</div>
       <div class="hidden md:flex items-center">
         <router-link to="/" class="mr-4 hover:underline"><i class="fa-solid fa-house"></i></router-link>
         <router-link
@@ -156,7 +157,7 @@ export default {
 </script>
 
 <style scoped>
-.swift-cart-store {
+.rapid-cart-boutique {
   font-family: "Brush Script MT", cursive;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: 1px;
