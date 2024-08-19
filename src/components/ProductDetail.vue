@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto p-6 relative">
     <button @click="goBack" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-75 transition duration-200">
-      Go Back
+      <i class="fas fa-arrow-left"></i>
     </button>
 
     <div v-if="loading" class="flex items-center justify-center h-screen">

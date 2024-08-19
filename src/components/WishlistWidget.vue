@@ -12,9 +12,23 @@
 <script>
 import { inject } from 'vue'
 
+/**
+ * A widget that displays a heart icon for the wishlist.
+ * It shows a badge with the count of items in the wishlist if the count is greater than zero.
+ * 
+ * @component
+ * @example
+ * <WishlistWidget />
+ */
 export default {
   name: 'WishlistWidget',
+
   setup() {
+    /**
+     * Injected wishlist count from the `useWishlist` composable.
+     * 
+     * @type {number}
+     */
     const { wishlistCount } = inject('useWishlist')
 
     return {

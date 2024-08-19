@@ -42,12 +42,34 @@ import { useCart } from '../composables/useCart'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
+/**
+ * A Vue component that displays the shopping cart with options to update quantities, remove items, and clear the cart.
+ *
+ * @component
+ */
 export default {
   name: 'ShoppingCart',
   setup() {
+    /**
+     * Provides cart-related methods and state.
+     *
+     * @const
+     * @type {Object}
+     * @property {Ref<Array>} cart - The current list of items in the cart.
+     * @property {Function} removeFromCart - Function to remove an item from the cart.
+     * @property {Function} updateQuantity - Function to update the quantity of an item in the cart.
+     * @property {Function} clearCart - Function to clear all items from the cart.
+     * @property {Ref<number>} totalCost - The total cost of items in the cart.
+     * @property {Function} loadCart - Function to load the cart data.
+     */
     const { cart, removeFromCart, updateQuantity, clearCart, totalCost, loadCart } = useCart()
+
     const router = useRouter()
 
+    /**
+     * Lifecycle hook that runs when the component is mounted.
+     * Redirects to the login page if no token is found in local storage; otherwise, loads the cart.
+     */
     onMounted(() => {
       if (!localStorage.getItem('token')) {
         router.push('/login')

@@ -66,24 +66,69 @@
 
 <script>
 import { ref, computed } from 'vue';
-import { useCart } from '../composables/useCart'; // Import useCart directly
-import { useWishlist } from '../composables/useWishlist'; // Ensure useWishlist is imported
+import { useCart } from '../composables/useCart';
+import { useWishlist } from '../composables/useWishlist';
 
+/**
+ * A component that displays and manages the user's wishlist.
+ * Allows users to add items to the cart, remove items from the wishlist, and clear the entire wishlist.
+ * Provides sorting and filtering options for the displayed wishlist items.
+ * 
+ * @component
+ * @example
+ * <Wishlist />
+ */
 export default {
   name: 'Wishlist',
+
   setup() {
+    /**
+     * Cart composable function for managing cart operations.
+     * 
+     * @type {Object}
+     */
     const cart = useCart();
+
+    /**
+     * Wishlist composable function for managing wishlist operations.
+     * 
+     * @type {Object}
+     * @property {import('vue').Ref<Array<Object>>} wishlist - The list of wishlist items.
+     * @property {Function} removeFromWishlist - Function to remove an item from the wishlist.
+     * @property {Function} clearWishlist - Function to clear all items from the wishlist.
+     */
     const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
 
+    /**
+     * Reactive reference for the selected sorting order.
+     * 
+     * @type {import('vue').Ref<string>}
+     */
     const sortOrder = ref('');
+
+    /**
+     * Reactive reference for the search filter query.
+     * 
+     * @type {import('vue').Ref<string>}
+     */
     const filterQuery = ref('');
 
+    /**
+     * Adds a product to the cart and optionally removes it from the wishlist.
+     * 
+     * @param {Object} product - The product object to be added to the cart.
+     */
     const addToCart = (product) => {
       cart.addToCart(product);
-      // Optionally remove from wishlist after adding to cart
       removeFromWishlist(product.id);
     };
 
+    /**
+     * Computed property that returns the filtered and sorted wishlist items.
+     * 
+     * @type {import('vue').ComputedRef<Array<Object>>}
+     * @returns {Array<Object>} - The filtered and sorted wishlist items.
+     */
     const filteredWishlist = computed(() => {
       let filtered = [...wishlist.value];
 
@@ -110,7 +155,7 @@ export default {
       wishlist,
       removeFromWishlist,
       clearWishlist,
-      addToCart, // Use the addToCart function defined in the setup
+      addToCart,
       sortOrder,
       filterQuery,
       filteredWishlist

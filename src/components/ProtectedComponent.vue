@@ -10,16 +10,36 @@
 </template>
 
 <script>
+/**
+ * A component that displays content accessible only to authenticated users.
+ *
+ * This component renders a message indicating that the user has successfully
+ * accessed a protected route. It is intended to be used in areas of the application
+ * that require user authentication.
+ *
+ * @component
+ * @example
+ * <ProtectedComponent />
+ */
 export default {
   name: 'ProtectedComponent',
   setup() {
-    // You can add any component-specific logic here
+    // No reactive properties or methods are defined for this component
     return {}
   }
 }
 </script>
 
 <style scoped>
+/**
+ * Styles for the ProtectedComponent.
+ * 
+ * .protected-component {
+ *   max-width: 600px;
+ *   margin: 0 auto;
+ *   padding: 20px;
+ * }
+ */
 .protected-component {
   max-width: 600px;
   margin: 0 auto;
