@@ -40,13 +40,30 @@ import ComparisonButton from './ComparisonButton.vue'
 
 export default {
   name: 'Home',
+  
   components: {
     AddToCartButton,
     WishlistButton,
     ComparisonButton
   },
+
+  /**
+   * Setup function for the Home component.
+   * This function provides the necessary data and methods for displaying featured products on the home page.
+   *
+   * @returns {Object} The reactive variables and methods available in the template.
+   */
   setup() {
+    /**
+     * List of filtered products to be displayed on the home page.
+     * @type {Array<Object>}
+     */
     const { filteredProducts } = inject('useApp')
+
+    /**
+     * Boolean indicating whether the user is logged in.
+     * @type {boolean}
+     */
     const isLoggedIn = inject('isLoggedIn')
 
     return {
@@ -56,4 +73,3 @@ export default {
   }
 }
 </script>
-
