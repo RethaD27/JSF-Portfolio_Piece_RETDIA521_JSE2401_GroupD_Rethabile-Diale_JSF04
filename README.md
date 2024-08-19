@@ -31,14 +31,14 @@ npm install
 
 3. ### Start the development server:
 npm run dev
-This will start the application in development mode and it should be accessible at http://localhost:5175.
+This will start the application in development mode and it should be accessible at http://localhost:5175
 
 4. ### Build for production:
 To create a production-ready build:
 npm run build
 
 ## Hosted Application
-The live version of the RapidCart Boutique can be accessed at: https://swiftcart-store.example.com
+The live version of the RapidCart Boutique can be accessed at: https://rapid-cart-boutiquee-commerce-store-rethabile-s-projects.vercel.app/
 
 ## Project Explainer Video
 A comprehensive video walkthrough of the project is available here: Project Explainer Video
