@@ -16,6 +16,11 @@ import { useRouter } from 'vue-router'
 export default {
   name: 'AddToCartButton',
   props: {
+    /**
+     * The product object to be added to the cart.
+     * @type {Object}
+     * @required
+     */
     product: {
       type: Object,
       required: true
@@ -26,6 +31,10 @@ export default {
     const isLoggedIn = inject('isLoggedIn')
     const router = useRouter()
 
+    /**
+     * Handles the add to cart action. If the user is logged in, it adds the product to the cart.
+     * Otherwise, it redirects the user to the login page.
+     */
     const handleAddToCart = () => {
       if (isLoggedIn.value) {
         addToCart(props.product)

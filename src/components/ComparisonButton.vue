@@ -16,6 +16,11 @@ import { useRouter } from 'vue-router'
 export default {
   name: 'ComparisonButton',
   props: {
+    /**
+     * The product to be added or removed from comparison.
+     * @type {Object}
+     * @property {string} id - The unique identifier of the product.
+     */
     product: {
       type: Object,
       required: true
@@ -26,6 +31,10 @@ export default {
     const isLoggedIn = inject('isLoggedIn')
     const router = useRouter()
 
+    /**
+     * Toggles the product's presence in the comparison list.
+     * If the user is not logged in, redirects to the login page.
+     */
     const toggleComparison = () => {
       if (!isLoggedIn.value) {
         router.push('/login')
@@ -39,6 +48,10 @@ export default {
       }
     }
 
+    /**
+     * Computes the button text based on the user's login status and product's comparison status.
+     * @returns {string} The text to display on the button.
+     */
     const buttonText = computed(() => {
       if (!isLoggedIn.value) return 'Login to Compare'
       if (isInComparison(props.product.id)) return 'Remove from Comparison'
