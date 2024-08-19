@@ -8,7 +8,7 @@ import ShoppingCart from './components/ShoppingCart.vue';
 import ComparisonPage from './components/ComparisonPage.vue';
 import Wishlist from './components/Wishlist.vue';
 import ProtectedComponent from './components/ProtectedComponent.vue';
-import { requireAuth } from './auth';
+import { useAuth } from './composables/useAuth';
 import './assets/main.css';
 
 /**
@@ -76,8 +76,9 @@ const router = createRouter({
  * @param {Function} next - The function to resolve the navigation.
  */
 router.beforeEach((to, from, next) => {
+  const { isAuthenticated } = useAuth();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!localStorage.getItem('token')) {
+    if (!isAuthenticated.value) {
       next({
         path: '/login',
         query: { redirect: to.fullPath },
