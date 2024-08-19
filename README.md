@@ -22,7 +22,7 @@ RapidCart Boutique is an e-commerce platform designed for users to browse, searc
 To run the project locally, follow these steps:
 
 1. ### Clone the repository:
-git clone https://github.com/yourusername/swiftcart-store.git
+git clone https://github.com/RethaD27/JSF-Portfolio_Piece_RETDIA521_JSE2401_GroupD_Rethabile-Diale_JSF04
 
 
 2. ### Install dependencies:
