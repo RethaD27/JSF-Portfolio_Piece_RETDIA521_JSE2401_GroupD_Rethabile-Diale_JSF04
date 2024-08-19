@@ -12,25 +12,25 @@
         <router-link to="/" class="mr-4 hover:underline"><i class="fa-solid fa-house"></i></router-link>
         <router-link
           to="/wishlist"
-          v-if="isLoggedIn"
+          v-if="isAuthenticated"
           class="mr-4 hover:underline"
         >
-        <i class="fa-solid fa-heart"></i> ({{ wishlistCount }})
+          <i class="fa-solid fa-heart"></i> ({{ wishlistCount }})
         </router-link>
-        <router-link to="/cart" v-if="isLoggedIn" class="mr-4 hover:underline">
+        <router-link to="/cart" v-if="isAuthenticated" class="mr-4 hover:underline">
           <i class="fa-solid fa-cart-shopping"></i> ({{ totalItems }})
         </router-link>
         <router-link
           to="/comparison"
-          v-if="isLoggedIn"
+          v-if="isAuthenticated"
           class="mr-4 hover:underline"
         >
-        <i class="fas fa-list"></i> ({{ comparisonCount }})
+          <i class="fas fa-list"></i> ({{ comparisonCount }})
         </router-link>
-        <router-link v-if="!isLoggedIn" to="/login" class="hover:underline"
+        <router-link v-if="!isAuthenticated" to="/login" class="hover:underline"
           ><i class="fa-solid fa-user"></i></router-link
         >
-        <button v-else @click="logout" class="hover:underline"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <button v-else @click="handleLogout" class="hover:underline"><i class="fa-solid fa-right-from-bracket"></i></button>
       </div>
       <div class="flex items-center">
         <ThemeToggle @theme-changed="isDarkMode = $event" />
@@ -70,48 +70,49 @@
       >
       <router-link
         to="/wishlist"
-        v-if="isLoggedIn"
+        v-if="isAuthenticated"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-      <i class="fa-solid fa-heart"></i> ({{ wishlistCount }})
+        <i class="fa-solid fa-heart"></i> ({{ wishlistCount }})
       </router-link>
       <router-link
         to="/cart"
-        v-if="isLoggedIn"
+        v-if="isAuthenticated"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-      <i class="fa-solid fa-cart-shopping"></i> ({{ totalItems }})
+        <i class="fa-solid fa-cart-shopping"></i> ({{ totalItems }})
       </router-link>
       <router-link
         to="/comparison"
-        v-if="isLoggedIn"
+        v-if="isAuthenticated"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-      <i class="fas fa-list"></i> ({{ comparisonCount }})
+        <i class="fas fa-list"></i> ({{ comparisonCount }})
       </router-link>
       <router-link
-        v-if="!isLoggedIn"
+        v-if="!isAuthenticated"
         to="/login"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
         ><i class="fa-solid fa-user"></i></router-link
       >
       <button
         v-else
-        @click="logout"
+        @click="handleLogout"
         class="block w-full text-left p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-      <i class="fa-solid fa-right-from-bracket"></i>
+        <i class="fa-solid fa-right-from-bracket"></i>
       </button>
     </div>
   </nav>
 </template>
 
 <script>
-import { ref, inject, computed } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useCart } from "../composables/useCart";
 import { useComparison } from "../composables/useComparison";
 import { useWishlist } from "../composables/useWishlist";
+import { useAuth } from "../composables/useAuth";
 import ThemeToggle from "./ThemeToggle.vue";
 
 export default {
@@ -122,29 +123,29 @@ export default {
   setup() {
     const open = ref(false);
     const router = useRouter();
-    const isLoggedIn = inject("isLoggedIn");
     const isDarkMode = ref(false);
     const { clearCart, totalItems } = useCart();
     const { comparisonCount } = useComparison();
     const { wishlist } = useWishlist();
+    const { isAuthenticated, logout } = useAuth();
+
     const wishlistCount = computed(() => wishlist.value.length);
 
     const toggleMenu = () => {
       open.value = !open.value;
     };
 
-    const logout = () => {
-      localStorage.removeItem("token");
-      isLoggedIn.value = false;
+    const handleLogout = () => {
+      logout();
       clearCart();
-      router.push("/");
+      router.push('/');
     };
 
     return {
       open,
       toggleMenu,
-      isLoggedIn,
-      logout,
+      isAuthenticated,
+      handleLogout,
       totalItems,
       comparisonCount,
       wishlistCount,

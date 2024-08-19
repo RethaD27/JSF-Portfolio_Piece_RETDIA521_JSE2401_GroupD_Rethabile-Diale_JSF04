@@ -9,14 +9,6 @@
       <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="firstName" class="sr-only">First Name</label>
-            <input id="firstName" name="firstName" type="text" required v-model="firstName" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="First Name">
-          </div>
-          <div>
-            <label for="lastName" class="sr-only">Last Name</label>
-            <input id="lastName" name="lastName" type="text" required v-model="lastName" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Last Name">
-          </div>
-          <div>
             <label for="username" class="sr-only">Username</label>
             <input id="username" name="username" type="text" required v-model="username" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Username">
           </div>
@@ -54,11 +46,6 @@
       <div v-if="successMessage" class="mt-2 text-center text-sm text-green-600">
         {{ successMessage }}
       </div>
-      <div v-if="token" class="mt-2 text-center text-sm text-gray-600">
-        <button @click="handleLogout" class="text-indigo-600 hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Logout
-        </button>
-      </div>
     </div>
   </div>
 </template>
@@ -82,13 +69,10 @@ export default {
     const { login, isAuthenticated } = useAuth()
     const username = ref('')
     const password = ref('')
-    const firstName = ref('')
-    const lastName = ref('')
     const showPassword = ref(false)
     const isLoading = ref(false)
     const error = ref('')
     const successMessage = ref('')
-    const token = ref(localStorage.getItem('token'))
     const router = useRouter()
     const route = useRoute()
 
@@ -96,14 +80,9 @@ export default {
       showPassword.value = !showPassword.value
     }
 
-    const handleLogout = () => {
-      localStorage.removeItem('token')
-      token.value = null
-    }
-
     const handleLogin = async () => {
       if (!username.value || !password.value) {
-        error.value = 'Please enter a username and password'
+        error.value = 'Please enter both username and password'
         return
       }
 
@@ -113,7 +92,7 @@ export default {
 
       try {
         successMessage.value = 'Authenticating...'
-        const success = await login(username.value, password.value, firstName.value, lastName.value)
+        const success = await login(username.value, password.value)
 
         if (!success) {
           throw new Error('Login failed')
@@ -137,16 +116,12 @@ export default {
     return {
       username,
       password,
-      firstName,
-      lastName,
       showPassword,
       isLoading,
       error,
       successMessage,
-      token,
       togglePassword,
-      handleLogin,
-      handleLogout
+      handleLogin
     }
   }
 }
