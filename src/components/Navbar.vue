@@ -9,28 +9,28 @@
     <div class="container mx-auto flex justify-between items-center p-4">
       <div class="text-2xl font-bold swift-cart-store">SwiftCart Store</div>
       <div class="hidden md:flex items-center">
-        <router-link to="/" class="mr-4 hover:underline">Home</router-link>
+        <router-link to="/" class="mr-4 hover:underline"><i class="fa-solid fa-house"></i></router-link>
         <router-link
           to="/wishlist"
           v-if="isLoggedIn"
           class="mr-4 hover:underline"
         >
-          Wishlist ({{ wishlistCount }})
+        <i class="fa-solid fa-heart"></i> ({{ wishlistCount }})
         </router-link>
         <router-link to="/cart" v-if="isLoggedIn" class="mr-4 hover:underline">
-          Cart ({{ totalItems }})
+          <i class="fa-solid fa-cart-shopping"></i> ({{ totalItems }})
         </router-link>
         <router-link
           to="/comparison"
           v-if="isLoggedIn"
           class="mr-4 hover:underline"
         >
-          Compare ({{ comparisonCount }})
+        <i class="fas fa-list"></i> ({{ comparisonCount }})
         </router-link>
         <router-link v-if="!isLoggedIn" to="/login" class="hover:underline"
-          >Login</router-link
+          ><i class="fa-solid fa-user"></i></router-link
         >
-        <button v-else @click="logout" class="hover:underline">Logout</button>
+        <button v-else @click="logout" class="hover:underline"><i class="fa-solid fa-right-from-bracket"></i></button>
       </div>
       <div class="flex items-center">
         <ThemeToggle @theme-changed="isDarkMode = $event" />
@@ -66,41 +66,41 @@
       <router-link
         to="/"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
-        >Home</router-link
+        ><i class="fa-solid fa-house"></i></router-link
       >
       <router-link
         to="/wishlist"
         v-if="isLoggedIn"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-        Wishlist ({{ wishlistCount }})
+      <i class="fa-solid fa-heart"></i> ({{ wishlistCount }})
       </router-link>
       <router-link
         to="/cart"
         v-if="isLoggedIn"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-        Cart ({{ totalItems }})
+      <i class="fa-solid fa-cart-shopping"></i> ({{ totalItems }})
       </router-link>
       <router-link
         to="/comparison"
         v-if="isLoggedIn"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-        Compare ({{ comparisonCount }})
+      <i class="fas fa-list"></i> ({{ comparisonCount }})
       </router-link>
       <router-link
         v-if="!isLoggedIn"
         to="/login"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
-        >Login</router-link
+        ><i class="fa-solid fa-user"></i></router-link
       >
       <button
         v-else
         @click="logout"
         class="block w-full text-left p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
       >
-        Logout
+      <i class="fa-solid fa-right-from-bracket"></i>
       </button>
     </div>
   </nav>
