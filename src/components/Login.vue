@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { watchEffect, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import EyeIcon from '../icons/EyeIcon.vue'
 import EyeOffIcon from '../icons/EyeOffIcon.vue'
@@ -112,6 +112,12 @@ export default {
         isLoading.value = false
       }
     }
+
+    const userILoggedIn = ref(isAuthenticated.value)
+
+  watchEffect(() => {
+    userILoggedIn.value = isAuthenticated.value
+  })
 
     return {
       username,
