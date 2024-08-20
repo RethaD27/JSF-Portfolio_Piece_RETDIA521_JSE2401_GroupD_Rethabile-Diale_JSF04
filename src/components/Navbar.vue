@@ -38,7 +38,7 @@
         </router-link>
         <!-- Display the username with a null check -->
         <span v-if="isAuthenticated && user" class="text-white dark:text-gray-400 mr-4">
-          {{ user.username }}
+          <i class="fa-solid fa-user"></i>{{ user.username }}
         </span>
         <router-link v-if="!isAuthenticated" to="/login" class="hover:underline">
           <i class="fa-solid fa-user"></i>
