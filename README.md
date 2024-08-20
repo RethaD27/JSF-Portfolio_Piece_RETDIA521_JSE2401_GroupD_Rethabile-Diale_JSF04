@@ -1,5 +1,5 @@
-# SwiftCart Store
-SwiftCart Store is an e-commerce platform designed for users to browse, search, and purchase products online. The application provides features like product filtering, sorting, wishlist management, and product comparison, with a focus on a seamless user experience. Built using Vue.js with Tailwind CSS for styling, the application also integrates user authentication and cart management.
+# RapidCart Boutique
+RapidCart Boutique is an e-commerce platform designed for users to browse, search, and purchase products online. The application provides features like product filtering, sorting, wishlist management, and product comparison, with a focus on a seamless user experience. Built using Vue.js with Tailwind CSS for styling, the application also integrates user authentication and cart management.
 
 ## Table of Contents
 * [Technologies Used](#technologies-used)
@@ -22,8 +22,8 @@ SwiftCart Store is an e-commerce platform designed for users to browse, search, 
 To run the project locally, follow these steps:
 
 1. ### Clone the repository:
-git clone https://github.com/yourusername/swiftcart-store.git
-cd swiftcart-store
+git clone https://github.com/RethaD27/JSF-Portfolio_Piece_RETDIA521_JSE2401_GroupD_Rethabile-Diale_JSF04
+
 
 2. ### Install dependencies:
 Ensure you have Node.js installed, then run:
@@ -31,20 +31,21 @@ npm install
 
 3. ### Start the development server:
 npm run dev
-This will start the application in development mode and it should be accessible at http://localhost:3000.
+This will start the application in development mode and it should be accessible at http://localhost:5175
 
 4. ### Build for production:
 To create a production-ready build:
 npm run build
 
 ## Hosted Application
-The live version of the SwiftCart Store can be accessed at: https://swiftcart-store.example.com
+The live version of the RapidCart Boutique can be accessed at: https://rapid-cart-boutiquee-commerce-store-rethabile-s-projects.vercel.app/
 
 ## Project Explainer Video
 A comprehensive video walkthrough of the project is available here: Project Explainer Video
 
 ## Code Repository
-The source code for this project is hosted on GitHub: SwiftCart Store Repository
+The source code for this project is hosted on GitHub: 
+JSF-Portfolio_Piece_RETDIA521_JSE2401_GroupD_Rethabile-Diale_JSF04 Repository
 
 ## External Resources
 ### Contributions to the Project
