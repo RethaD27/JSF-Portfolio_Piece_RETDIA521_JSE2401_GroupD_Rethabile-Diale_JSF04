@@ -4,13 +4,14 @@
     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200"
     :disabled="!isLoggedIn"
   >
-    {{ isLoggedIn ? 'Add To Cart' : 'Login to Add' }}
+    {{ userILoggedIn ? 'Add To Cart' : 'Login to Add' }}
   </button>
 </template>
 
 <script>
-import { inject } from 'vue'
+import { inject, watchEffect, ref } from 'vue'
 import { useCart } from '../composables/useCart'
+import { useAuth } from '../composables/useAuth'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -30,6 +31,7 @@ export default {
     const { addToCart } = useCart()
     const isLoggedIn = inject('isLoggedIn')
     const router = useRouter()
+    const { isAuthenticated } = useAuth()
 
     /**
      * Handles the add to cart action. If the user is logged in, it adds the product to the cart.
@@ -43,10 +45,18 @@ export default {
       }
     }
 
+const userILoggedIn = ref(isAuthenticated.value)
+
+  watchEffect(() => {
+    userILoggedIn.value = isAuthenticated.value
+  })
+
     return {
       addToCart: handleAddToCart,
-      isLoggedIn
+      isLoggedIn,
+      userILoggedIn,
     }
   }
 }
+
 </script>
