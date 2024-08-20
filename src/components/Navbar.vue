@@ -7,10 +7,14 @@
     ]"
   >
     <div class="container mx-auto flex justify-between items-center p-4">
-      <div class="text-2xl font-bold rapid-cart-boutique"><i class="fa-solid fa-crown text-2xl mr-2"></i>
-        RapidCart Boutique</div>
+      <div class="text-2xl font-bold rapid-cart-boutique">
+        <i class="fa-solid fa-crown text-2xl mr-2"></i>
+        RapidCart Boutique
+      </div>
       <div class="hidden md:flex items-center">
-        <router-link to="/" class="mr-4 hover:underline"><i class="fa-solid fa-house"></i></router-link>
+        <router-link to="/" class="mr-4 hover:underline">
+          <i class="fa-solid fa-house"></i>
+        </router-link>
         <router-link
           to="/wishlist"
           v-if="isAuthenticated"
@@ -18,7 +22,11 @@
         >
           <i class="fa-solid fa-heart"></i> ({{ wishlistCount }})
         </router-link>
-        <router-link to="/cart" v-if="isAuthenticated" class="mr-4 hover:underline">
+        <router-link
+          to="/cart"
+          v-if="isAuthenticated"
+          class="mr-4 hover:underline"
+        >
           <i class="fa-solid fa-cart-shopping"></i> ({{ totalItems }})
         </router-link>
         <router-link
@@ -28,10 +36,20 @@
         >
           <i class="fas fa-list"></i> ({{ comparisonCount }})
         </router-link>
-        <router-link v-if="!isAuthenticated" to="/login" class="hover:underline"
-          ><i class="fa-solid fa-user"></i></router-link
+        <!-- Display the username with a null check -->
+        <span v-if="isAuthenticated && user" class="text-white dark:text-gray-400 mr-4">
+          {{ user.username }}
+        </span>
+        <router-link v-if="!isAuthenticated" to="/login" class="hover:underline">
+          <i class="fa-solid fa-user"></i>
+        </router-link>
+        <button
+          v-else
+          @click="handleLogout"
+          class="hover:underline"
         >
-        <button v-else @click="handleLogout" class="hover:underline"><i class="fa-solid fa-right-from-bracket"></i></button>
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
       </div>
       <div class="flex items-center">
         <ThemeToggle @theme-changed="isDarkMode = $event" />
@@ -67,8 +85,9 @@
       <router-link
         to="/"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
-        ><i class="fa-solid fa-house"></i></router-link
       >
+        <i class="fa-solid fa-house"></i>
+      </router-link>
       <router-link
         to="/wishlist"
         v-if="isAuthenticated"
@@ -90,12 +109,17 @@
       >
         <i class="fas fa-list"></i> ({{ comparisonCount }})
       </router-link>
+      <!-- Display the username in the mobile menu with a null check -->
+      <span v-if="isAuthenticated && user" class="block p-2 text-white dark:text-gray-400">
+        {{ user.username }}
+      </span>
       <router-link
         v-if="!isAuthenticated"
         to="/login"
         class="block p-2 hover:bg-yellow-400 dark:hover:bg-gray-600"
-        ><i class="fa-solid fa-user"></i></router-link
       >
+        <i class="fa-solid fa-user"></i>
+      </router-link>
       <button
         v-else
         @click="handleLogout"
@@ -128,7 +152,7 @@ export default {
     const { clearCart, totalItems } = useCart();
     const { comparisonCount } = useComparison();
     const { wishlist } = useWishlist();
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout, user } = useAuth(); // Access user object
 
     const wishlistCount = computed(() => wishlist.value.length);
 
@@ -151,6 +175,7 @@ export default {
       comparisonCount,
       wishlistCount,
       isDarkMode,
+      user, // Return user for template usage
     };
   },
 };
