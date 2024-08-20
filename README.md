@@ -22,20 +22,20 @@ RapidCart Boutique is an e-commerce platform designed for users to browse, searc
 To run the project locally, follow these steps:
 
 1. ### Clone the repository:
-git clone https://github.com/RethaD27/JSF-Portfolio_Piece_RETDIA521_JSE2401_GroupD_Rethabile-Diale_JSF04
+   git clone https://github.com/RethaD27/JSF-Portfolio_Piece_RETDIA521_JSE2401_GroupD_Rethabile-Diale_JSF04
 
 
 2. ### Install dependencies:
-Ensure you have Node.js installed, then run:
-npm install
+   Ensure you have Node.js installed, then run:
+   npm install
 
 3. ### Start the development server:
-npm run dev
-This will start the application in development mode and it should be accessible at http://localhost:5175
+   npm run dev
+   This will start the application in development mode and it should be accessible at http://localhost:5175
 
 4. ### Build for production:
-To create a production-ready build:
-npm run build
+   To create a production-ready build:
+   npm run build
 
 ## Hosted Application
 The live version of the RapidCart Boutique can be accessed at: https://rapid-cart-boutiquee-commerce-store-rethabile-s-projects.vercel.app/
