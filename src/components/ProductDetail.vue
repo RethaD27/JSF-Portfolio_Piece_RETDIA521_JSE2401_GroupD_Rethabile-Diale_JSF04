@@ -31,12 +31,6 @@
       </div>
       <p class="text-gray-700 mb-4">{{ product.description }}</p>
 
-      <div v-if="product.discountPercentage" class="mt-4">
-        <p class="text-red-600 font-bold">{{ product.discountPercentage }}% OFF</p>
-        <p class="text-gray-800 font-bold">${{ product.discountedPrice.toFixed(2) }}</p>
-        <p class="text-gray-500 line-through">${{ product.price.toFixed(2) }}</p>
-        <p class="text-gray-600">Sale ends on: {{ formatDate(product.saleEndDate) }}</p>
-      </div>
 
       <div class="flex justify-between items-center mt-5">
         <button @click="toggleFavorite(product.id)">
