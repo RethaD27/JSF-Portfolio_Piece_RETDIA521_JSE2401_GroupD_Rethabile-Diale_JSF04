@@ -4,24 +4,16 @@
     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200"
     :disabled="!isLoggedIn"
   >
-    {{ isLoggedIn ? 'Add To Wishlist' : 'Login to Add' }}
+    {{ userILoggedIn ? 'Add To Wishlist' : 'Login to Add' }}
   </button>
 </template>
 
 <script>
-import { inject } from 'vue'
+import { inject, ref, watchEffect } from 'vue'
 import { useWishlist } from '../composables/useWishlist'
+import { useAuth } from '../composables/useAuth'
 import { useRouter } from 'vue-router'
 
-/**
- * A button component for adding a product to the wishlist.
- * The button displays "Add To Wishlist" if the user is logged in, or "Login to Add" if not.
- * Clicking the button will either add the product to the wishlist or redirect the user to the login page.
- * 
- * @component
- * @example
- * <WishlistButton :product="{ id: 1, name: 'Sample Product' }" />
- */
 export default {
   name: 'WishlistButton',
 
@@ -40,27 +32,12 @@ export default {
   },
 
   setup(props) {
-    /**
-     * Composable function for wishlist operations.
-     * 
-     * @function
-     * @returns {Object} - Contains the function `addToWishlist` to add a product to the wishlist.
-     */
     const { addToWishlist } = useWishlist()
-    
-    /**
-     * Injected reactive reference indicating if the user is logged in.
-     * 
-     * @type {import('vue').Ref<boolean>}
-     */
     const isLoggedIn = inject('isLoggedIn')
-    
-    /**
-     * Vue Router instance for navigation.
-     * 
-     * @type {import('vue-router').Router}
-     */
     const router = useRouter()
+    const { isAuthenticated } = useAuth()
+
+    const userILoggedIn = ref(isAuthenticated.value)
 
     /**
      * Handles the click event for adding a product to the wishlist.
@@ -69,16 +46,21 @@ export default {
      * @function
      */
     const handleAddToWishlist = () => {
-      if (isLoggedIn.value) {
+      if (userILoggedIn.value) {
         addToWishlist(props.product)
       } else {
         router.push('/login')
       }
     }
 
+    watchEffect(() => {
+      userILoggedIn.value = isAuthenticated.value
+    })
+
     return {
       addToWishlist: handleAddToWishlist,
-      isLoggedIn
+      isLoggedIn,
+      userILoggedIn
     }
   }
 }
