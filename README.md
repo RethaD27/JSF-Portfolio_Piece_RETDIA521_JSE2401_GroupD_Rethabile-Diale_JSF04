@@ -41,7 +41,7 @@ To run the project locally, follow these steps:
 The live version of the RapidCart Boutique can be accessed at: https://rapid-cart-boutiquee-commerce-store-rethabile-s-projects.vercel.app/
 
 ## Project Explainer Video
-A comprehensive video walkthrough of the project is available here: Project Explainer Video
+A comprehensive video walkthrough of the project is available here: https://youtu.be/NX7aAUe3qoo
 
 ## Code Repository
 The source code for this project is hosted on GitHub: 
