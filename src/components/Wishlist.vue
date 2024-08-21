@@ -121,7 +121,7 @@ export default {
     const addToCart = (product) => {
       cart.addToCart(product);
       removeFromWishlist(product.id);
-    };                                                    a
+    };                                                    
 
     /**
      * Computed property that returns the filtered and sorted wishlist items.
