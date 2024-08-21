@@ -45,8 +45,8 @@ export function useAuth() {
   const checkAuth = () => {
     token.value = localStorage.getItem('token')
     if (token.value) {
-      // You might want to validate the token here or fetch user data
-      user.value = { username: 'User' } // Placeholder, replace with actual user data
+      
+      user.value = { username: 'User' } 
     }
   }
 
